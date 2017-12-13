@@ -5,6 +5,7 @@ import Mp3Player.MP3Player;
 import Playlist.PlaylistManager;
 import Playlist.Track;
 import Playlist.Playlist;
+import ddf.minim.AudioPlayer;
 import ddf.minim.analysis.FFT;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -167,4 +168,6 @@ public class Controller {
     public FFT getFFT(){
         return player.getFFT();
     }
+
+    public AudioPlayer getAudio() { return player.getAudioplayer();}
 }

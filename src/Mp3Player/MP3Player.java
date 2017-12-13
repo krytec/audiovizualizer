@@ -62,7 +62,7 @@ public class MP3Player{
         timeline = new Timeline();
         length.set(0);
         TrackTask task = new TrackTask();
-        timer.schedule(task,1000,1000);
+        timer.schedule(task,200,200);
         audioplayer.play();
 
 
@@ -99,7 +99,7 @@ public class MP3Player{
     public void play(){
         timer = new Timer();
         TrackTask task = new TrackTask();
-        timer.schedule(task, 1000, 1000);
+        timer.schedule(task, 200, 200);
         playing=true;
         System.out.print(actTrack.getFile());
         audioplayer.play();
@@ -271,7 +271,7 @@ public class MP3Player{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if(length.get() < (audioplayer.getMetaData().length()/1000)){
+                    if(length.get() < (audioplayer.getMetaData().length()/200)){
                         length.set(length.get()+1);
                     }
                     else{
@@ -321,12 +321,7 @@ public class MP3Player{
 
     }
 
-
-
-
-
-
-
-
-
+    public AudioPlayer getAudioplayer() {
+        return audioplayer;
+    }
 }
