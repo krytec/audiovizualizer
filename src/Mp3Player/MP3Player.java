@@ -62,7 +62,7 @@ public class MP3Player{
         timeline = new Timeline();
         length.set(0);
         TrackTask task = new TrackTask();
-        timer.schedule(task,200,200);
+        timer.schedule(task,100,100);
         audioplayer.play();
 
 
@@ -271,7 +271,7 @@ public class MP3Player{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if(length.get() < (audioplayer.getMetaData().length()/200)){
+                    if(length.get() < (audioplayer.getMetaData().length()/100)){
                         length.set(length.get()+1);
                     }
                     else{
