@@ -45,8 +45,8 @@ public class PlaylistDrawing {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         beatDetect = new BeatDetect(1024,44100);
-        final double[] oldX = {midx};
-        final double[] oldY = {midy};
+        final double[] oldX = {midx,midx,midx,midx};
+        final double[] oldY = {midy,midy,midy,midy};
 
 
         controller.integerProperty().addListener(new ChangeListener<Number>() {
@@ -165,10 +165,34 @@ public class PlaylistDrawing {
                     r = map(fft.getBand(i), 0, 1, 250, 255);
                     double x2 = midx - r * Math.cos(slice*i);
                     double y2 = midy - r * Math.sin(slice*i);
-                    gc.strokeLine(oldX[0], oldY[0], x2, y2);
-                    oldX[0] = x2;
-                    oldY[0] = y2;
 
+                    if(beatDetect.isSnare()){
+                        x2 =midx + r * Math.cos(slice*i);
+                        y2 = midy - r * Math.sin(slice*i);
+                        gc.strokeLine(oldX[1], oldY[1], x2, y2);
+                        oldX[1] = x2;
+                        oldY[1] = y2;
+                    }
+                    else if
+                        (beatDetect.isHat()){
+                            x2 =midx - r * Math.cos(slice*i);
+                            y2 = midy + r * Math.sin(slice*i);
+                            gc.strokeLine(oldX[2], oldY[2], x2, y2);
+                            oldX[2] = x2;
+                            oldY[2] = y2;
+                        }
+                    else if(beatDetect.isKick()){
+                        x2 =midx + r * Math.cos(slice*i);
+                        y2 = midy + r * Math.sin(slice*i);
+                        gc.strokeLine(oldX[3], oldY[3], x2, y2);
+                        oldX[3] = x2;
+                        oldY[3] = y2;
+                    }
+                    else {
+                        gc.strokeLine(oldX[0], oldY[0], x2, y2);
+                        oldX[0] = x2;
+                        oldY[0] = y2;
+                    }
 
                 }
 
