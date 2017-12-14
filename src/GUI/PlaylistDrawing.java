@@ -53,7 +53,7 @@ public class PlaylistDrawing {
                 gc.setStroke(Color.WHITE);
                 fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
                 beatDetect = new BeatDetect();
-                beatDetect.detect(controller.getAudio().mix);
+               beatDetect.detect(controller.getAudio().mix);
                 fft.forward(controller.getAudio().mix);
 
 
@@ -63,9 +63,12 @@ public class PlaylistDrawing {
 
 
                for (int i = 0; i < points; i++) {
+                    radius=200;
                     gc.setStroke(Color.WHITE);
                     double angle = slice * i;
                     double buffer = fft.getBand(i) * 8;
+
+
                     if (buffer < 1) {
                         buffer *= 2;
                     }
@@ -74,6 +77,7 @@ public class PlaylistDrawing {
                     }
                     double x = midx + radius * Math.cos(angle);
                     double y = midy + radius * Math.sin(angle);
+
                     double newX = x + (buffer * Math.cos(angle));
                     double newY = y + (buffer * Math.sin(angle));
 
@@ -84,8 +88,9 @@ public class PlaylistDrawing {
                     System.out.println("y: " + y);
                     System.out.println("x: " + x);
 
+
                     gc.strokeLine(x, y, newX, newY);
-                    gc.strokeOval(newX, newY, 2, 2);
+
 
 
                 }
@@ -94,12 +99,14 @@ public class PlaylistDrawing {
                 } **/
 
                 for (int i = 0; i < 513; i++) {
+                    radius=200;
                     gc.setStroke(Color.WHITE);
                     double angle = 2*Math.PI/513 * i;
                     double buffer=0;
                     for (int j=0;j<fft.specSize();j++) {
                         buffer += fft.getBand(i) * 8;
                     }
+
                     buffer = buffer/fft.specSize();
                     System.out.println(buffer);
                     double x = midx + radius * Math.cos(angle);
@@ -124,6 +131,7 @@ public class PlaylistDrawing {
         box.getChildren().addAll(pane);
 
     }
+
 
 
 
