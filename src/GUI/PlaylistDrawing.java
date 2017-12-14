@@ -138,19 +138,40 @@ public class PlaylistDrawing {
 
                     gc.fillOval(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
                 }
+                /** Halbkreis!
+                 *
+                 *
+                oldX[0] = midx-map(fft.getBand(0), 0, 1, 250, 255)*Math.cos(0);;
+                oldY[0] = midy-map(fft.getBand(0), 0, 1, 250, 255)*Math.sin(0);;
 
-
-                for (int i = 0; i < points; i++) {
-
-                    r = -map(fft.getBand(i), 0, 1, 250, 255);
-                    double x2 = midx + r * Math.cos(slice*i);
-                    double y2 = midy + r * Math.sin(slice*i);
+                for (int i = 0; i < 360; i++) {
+                    int radmultiplikation = i/2;
+                    slice=2*Math.PI/360;
+                    r = map(fft.getBand(i), 0, 1, 250, 255);
+                    double x2 = midx - r * Math.cos(slice*radmultiplikation);
+                    double y2 = midy - r * Math.sin(slice*radmultiplikation);
                     gc.strokeLine(oldX[0], oldY[0], x2, y2);
                     oldX[0] = x2;
                     oldY[0] = y2;
 
 
                 }
+                 **/
+                /** Kreis!
+                 *
+                 */
+                for (int i = 0; i < points; i++) {
+
+                    r = map(fft.getBand(i), 0, 1, 250, 255);
+                    double x2 = midx - r * Math.cos(slice*i);
+                    double y2 = midy - r * Math.sin(slice*i);
+                    gc.strokeLine(oldX[0], oldY[0], x2, y2);
+                    oldX[0] = x2;
+                    oldY[0] = y2;
+
+
+                }
+
 
 
             }
