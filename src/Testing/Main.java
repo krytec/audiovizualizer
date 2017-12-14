@@ -35,7 +35,7 @@ public class Main extends Application {
         draw.init(root);
         controllbar.init(root);
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 1920, 1080));
         primaryStage.show();
     }
 

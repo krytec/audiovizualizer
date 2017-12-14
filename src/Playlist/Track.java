@@ -87,7 +87,7 @@ public class Track {
      */
     public int getLength(){
 
-            return (int)length/1000;
+            return (int)length/100;
 
     }
 }

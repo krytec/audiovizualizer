@@ -100,7 +100,7 @@ public class MP3Player{
     public void play(){
         timer = new Timer();
         TrackTask task = new TrackTask();
-        timer.schedule(task, 200, 200);
+        timer.schedule(task, 100, 100);
         playing=true;
         System.out.print(actTrack.getFile());
         audioplayer.play();
