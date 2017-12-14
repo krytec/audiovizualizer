@@ -2,6 +2,7 @@ package Mp3Player;
 import Playlist.Track;
 import Playlist.Playlist;
 import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 import de.hsrm.mi.eibo.simpleplayer.SimpleAudioPlayer;
@@ -25,7 +26,7 @@ public class MP3Player{
 
 
     private Playlist actPlaylist;
-    private SimpleMinim minim = new SimpleMinim(true);
+    private Minim minim = new SimpleMinim(true);
     private AudioPlayer audioplayer;
     private Timer timer;
     private Boolean shuffle = false;
@@ -43,6 +44,7 @@ public class MP3Player{
      *
      */
     public MP3Player(){
+
     }
 
     /**
@@ -59,7 +61,6 @@ public class MP3Player{
         audioplayer = minim.loadFile(filename);
         audioplayer.setGain(-12);
         timer = new Timer();
-        timeline = new Timeline();
         length.set(0);
         TrackTask task = new TrackTask();
         timer.schedule(task,100,100);
