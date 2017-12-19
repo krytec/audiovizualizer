@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * PlayListManager class um die Playlist zu Laden, neue Playlists hinzuzufügen, ändern usw.
@@ -48,9 +49,18 @@ public class PlaylistManager {
                 if(mp3.hasId3v2Tag()){
                     b = mp3.getId3v2Tag().getAlbumImage();
                 }else{b = null;}
-                if(mp3.hasId3v1Tag()){
-                    if(mp3.getId3v1Tag().getTitle()!=null){
-                    titel = mp3.getId3v1Tag().getTitle();} else{titel = f;}
+                if(mp3.hasId3v1Tag()) {
+                    if (mp3.getId3v1Tag().getTitle() != null) {
+                        titel = mp3.getId3v1Tag().getTitle();
+                    
+                    if (titel == "") {
+                        titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length - 1];
+
+                    }
+                    }
+                    else{
+                        titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length-1];
+                    }
                     if(mp3.getId3v1Tag().getAlbum()!=null){
                         album=mp3.getId3v1Tag().getAlbum();
                     }else{ album = " ";}
@@ -58,7 +68,7 @@ public class PlaylistManager {
                         intepret=mp3.getId3v1Tag().getArtist();}else{ intepret=" ";
                     }
                 }else{
-                    titel=f;
+                    titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length-1];
                     intepret= " ";
                     album = " ";
                 }
