@@ -7,19 +7,13 @@ import ddf.minim.analysis.FFT;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import Playlist.Track;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
 
 public class PlaylistDrawing {
 
@@ -52,7 +46,9 @@ public class PlaylistDrawing {
         controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
+                Circle circle = new Circle(midx,midy,125);
+                circle.setFill(Color.color(1,1,1));
+                pane.getChildren().addAll(circle);
 
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
@@ -68,6 +64,7 @@ public class PlaylistDrawing {
 
                 float spread = map(450, 0, (float) points, 1, 21.5f);
                 float r;
+
                 /**
                  for (int i = 0; i < points; i++) {
                  radius=150;
@@ -109,6 +106,7 @@ public class PlaylistDrawing {
 
                  }
                  **/
+
                 for (int i = 0; i < points; i += spread) {
                     double buffer = Math.abs(fft.getBand(i) * 4);
                     float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
@@ -138,6 +136,8 @@ public class PlaylistDrawing {
 
                     gc.fillOval(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
                 }
+
+
                 /** Halbkreis!
                  *
                  *
@@ -157,42 +157,19 @@ public class PlaylistDrawing {
 
                 }
                  **/
-                /** Kreis!
-                 *
-                 */
+
+
+                //Kreis
                 for (int i = 0; i < points; i++) {
 
                     r = map(fft.getBand(i), 0, 1, 250, 255);
                     double x2 = midx - r * Math.cos(slice*i);
                     double y2 = midy - r * Math.sin(slice*i);
 
-                    if(beatDetect.isSnare()){
-                        x2 =midx + r * Math.cos(slice*i);
-                        y2 = midy - r * Math.sin(slice*i);
-                        gc.strokeLine(oldX[1], oldY[1], x2, y2);
-                        oldX[1] = x2;
-                        oldY[1] = y2;
-                    }
-                    else if
-                        (beatDetect.isHat()){
-                            x2 =midx - r * Math.cos(slice*i);
-                            y2 = midy + r * Math.sin(slice*i);
-                            gc.strokeLine(oldX[2], oldY[2], x2, y2);
-                            oldX[2] = x2;
-                            oldY[2] = y2;
-                        }
-                    else if(beatDetect.isKick()){
-                        x2 =midx + r * Math.cos(slice*i);
-                        y2 = midy + r * Math.sin(slice*i);
-                        gc.strokeLine(oldX[3], oldY[3], x2, y2);
-                        oldX[3] = x2;
-                        oldY[3] = y2;
-                    }
-                    else {
                         gc.strokeLine(oldX[0], oldY[0], x2, y2);
                         oldX[0] = x2;
                         oldY[0] = y2;
-                    }
+
 
                 }
 
@@ -208,6 +185,7 @@ public class PlaylistDrawing {
                 gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
             }
         });
+
         pane.getChildren().addAll(canvas);
         box.getChildren().addAll(pane);
 
@@ -218,5 +196,9 @@ public class PlaylistDrawing {
     static public final float map(float value, float istart, float istop, float ostart, float ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     }
-}
+
+
+
+    }
+
 
