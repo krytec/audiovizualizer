@@ -10,6 +10,7 @@ import Playlist.Track;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -28,7 +29,7 @@ public class PlaylistDrawing {
     public void init(VBox box){
 
 
-        HBox pane = new HBox();
+        StackPane pane = new StackPane();
         playlist = controller.getactPlaylist();
         final Canvas canvas = new Canvas(1920,800);
         canvas.setOnMouseClicked(e-> {if(!controller.isPlaying().getValue()){controller.play(controller.getactPlaylist());}
@@ -134,13 +135,13 @@ public class PlaylistDrawing {
                     double newX = x + (buffer * Math.cos(angle));
                     double newY = y + (buffer * Math.sin(angle));
 
-                    gc.fillOval(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
+                    gc.fillRect(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
                 }
 
 
                 /** Halbkreis!
                  *
-                 **/
+
                 oldX[0] = midx-map(fft.getBand(0), 0, 1, 250, 255)*Math.cos(0);;
                 oldY[0] = midy-map(fft.getBand(0), 0, 1, 250, 255)*Math.sin(0);;
 
@@ -157,15 +158,29 @@ public class PlaylistDrawing {
 
                 }
 
-
-
-                /**Kreis
+                 **/
+                /**Kreis **/
                 for (int i = 0; i < points; i++) {
 
                     r = map(fft.getBand(i), 0, 1, 250, 255);
                     double x2 = midx - r * Math.cos(slice*i);
                     double y2 = midy - r * Math.sin(slice*i);
-
+                    float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
+                    if(beatDetect.isKick()){
+                        gc.setFill(Color.hsb(rgb,1,1));
+                        gc.fill();
+                        gc.fillOval(midx,midy,250,250);
+                    }
+                    if(beatDetect.isHat()){
+                        gc.setFill(Color.hsb(rgb,1,1));
+                        gc.fill();
+                        gc.fillRoundRect(midx,midy,250,250,10,10);
+                    }
+                    if(beatDetect.isSnare()){
+                        gc.setFill(Color.hsb(rgb,1,1));
+                        gc.fill();
+                        gc.fillRect(midx,midy,250,250);
+                    }
                         gc.strokeLine(oldX[0], oldY[0], x2, y2);
                         oldX[0] = x2;
                         oldY[0] = y2;
@@ -173,7 +188,7 @@ public class PlaylistDrawing {
 
                 }
 
-                **/
+
 
             }
         });
