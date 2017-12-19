@@ -25,7 +25,7 @@ public class Songdrawing {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         playlist= controller.getactPlaylist();
 
-        
+
 
     }
 }
