@@ -1,12 +1,11 @@
 package Filter;
 
 import Testing.Controller;
-import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class CircleFilter {
+public class CircleFilter implements Filter{
 
     private Controller controller;
     private GraphicsContext gc;
@@ -18,6 +17,7 @@ public class CircleFilter {
         this.controller=controller;
     }
 
+    @Override
     public void drawFilter(double[] oldX,double[] oldY){
 
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
@@ -49,9 +49,19 @@ public class CircleFilter {
         }
     }
 
+    @Override
+    public void drawFilter() {
+
+    }
 
 
-    static public final float map(float value, float istart, float istop, float ostart, float ostop) {
+    @Override
+    public final float map(float value, float istart, float istop, float ostart, float ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     }
+
+
+
+
+
 }

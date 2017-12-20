@@ -8,7 +8,8 @@ public class FilterMap {
     public FilterMap(){}
 
     public void init(){
-       
+        Map<String,Filter> map = new HashMap<String,Filter>();
+
 
     }
 }
