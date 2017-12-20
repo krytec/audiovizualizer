@@ -1,6 +1,7 @@
 package Testing;
 
 import GUI.Controllbar;
+import GUI.DrawFilter;
 import GUI.PlaylistDrawing;
 import Mp3Player.MP3Player;
 import Playlist.Playlist;
@@ -19,7 +20,7 @@ public class Main extends Application {
     private PlaylistManager manager;
     private MP3Player player;
     private Playlist playlist;
-    private PlaylistDrawing draw;
+    private DrawFilter draw;
     private Controllbar controllbar;
 
     @Override
@@ -30,7 +31,7 @@ public class Main extends Application {
         playlist=manager.createTrack(playlist);
         controller = new Controller(player,manager,playlist);
         controllbar = new Controllbar(controller);
-        draw = new PlaylistDrawing(controller);
+        draw = new DrawFilter(controller);
         VBox root = new VBox();
         draw.init(root);
         controllbar.init(root);

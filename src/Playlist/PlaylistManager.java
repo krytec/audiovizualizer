@@ -32,13 +32,12 @@ public class PlaylistManager {
      */
     public Playlist createTrack(Playlist playlist)throws IOException{
         BufferedReader br = new BufferedReader(new FileReader("playlist.M3U"));
-        String f,titel,album,intepret;
+        String f,titel,album,intepret,genre;
         byte[] b;
         int length;
 
         while((f=br.readLine())!=null) {
             Mp3File mp3=null;
-
             try {
                     mp3 = new Mp3File(f);
             } catch (Exception e) {
@@ -71,6 +70,7 @@ public class PlaylistManager {
                     titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length-1];
                     intepret= " ";
                     album = " ";
+                    genre=" ";
                 }
                 length = (int) mp3.getLengthInMilliseconds();
                 Track t = new Track(f,titel,album,intepret,b,length);
