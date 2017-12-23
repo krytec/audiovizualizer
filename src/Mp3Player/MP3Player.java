@@ -39,6 +39,7 @@ public class MP3Player{
     private SimpleObjectProperty<Track> actTrackp = new SimpleObjectProperty<>(actTrack);
     private BeatDetect beat;
     private FFT fft;
+
     /**
      * Constructor für den Mp3Player, gibt Labels und Image mit, um diese dann zu updaten
      *
@@ -63,7 +64,7 @@ public class MP3Player{
         timer = new Timer();
         length.set(0);
         TrackTask task = new TrackTask();
-        timer.schedule(task,100,100);
+        timer.schedule(task,10,10);
         audioplayer.play();
 
 
@@ -272,7 +273,7 @@ public class MP3Player{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if(length.get() < (audioplayer.getMetaData().length()/100)){
+                    if(length.get() < (audioplayer.getMetaData().length()/10)){
                         length.set(length.get()+1);
                     }
                     else{

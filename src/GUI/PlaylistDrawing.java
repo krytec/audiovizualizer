@@ -2,8 +2,12 @@ package GUI;
 
 import Playlist.Playlist;
 import Testing.Controller;
+import ddf.minim.AudioInput;
+import ddf.minim.AudioOutput;
+import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
+import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import Playlist.Track;
@@ -25,6 +29,9 @@ public class PlaylistDrawing {
 
     private Controller controller;
     private Playlist playlist;
+    private Minim minim = new SimpleMinim(true);
+    private AudioOutput out;
+    private AudioInput in;
     private FFT fft;
     private BeatDetect beatDetect;
     public PlaylistDrawing(Controller controller){
@@ -48,6 +55,8 @@ public class PlaylistDrawing {
         final double[] oldX = {midx,midx,midx,midx};
         final double[] oldY = {midy,midy,midy,midy};
 
+        in= minim.getLineIn(Minim.STEREO,1024);
+        out = minim.getLineOut(Minim.STEREO,1024);
 
         controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -60,6 +69,8 @@ public class PlaylistDrawing {
                 fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
                 beatDetect.detect(controller.getAudio().mix);
                 fft.forward(controller.getAudio().mix);
+
+
 
 
                 double radius;
@@ -136,7 +147,7 @@ public class PlaylistDrawing {
                     double newX = x + (buffer * Math.cos(angle));
                     double newY = y + (buffer * Math.sin(angle));
 
-                    gc.fillOval(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
+                    gc.fillRect(newX, newY, (buffer > 5) ? buffer / 5 : buffer, (buffer > 5) ? buffer / 5 : buffer);
                 }
                 /** Halbkreis!
                  *
@@ -165,7 +176,11 @@ public class PlaylistDrawing {
                     r = map(fft.getBand(i), 0, 1, 250, 255);
                     double x2 = midx - r * Math.cos(slice*i);
                     double y2 = midy - r * Math.sin(slice*i);
-
+                    if(beatDetect.isSnare() || beatDetect.isKick() || beatDetect.isHat()){
+                        gc.setFill(Color.WHITE);
+                        gc.fill();
+                        gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
+                    }
                     if(beatDetect.isSnare()){
                         x2 =midx + r * Math.cos(slice*i);
                         y2 = midy - r * Math.sin(slice*i);

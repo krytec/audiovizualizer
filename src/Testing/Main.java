@@ -21,6 +21,7 @@ public class Main extends Application {
     private MP3Player player;
     private Playlist playlist;
     private DrawFilter draw;
+    private PlaylistDrawing drawing;
     private Controllbar controllbar;
 
     @Override
@@ -32,8 +33,9 @@ public class Main extends Application {
         controller = new Controller(player,manager,playlist);
         controllbar = new Controllbar(controller);
         draw = new DrawFilter(controller);
+        drawing = new PlaylistDrawing(controller);
         VBox root = new VBox();
-        draw.init(root);
+        drawing.init(root);
         controllbar.init(root);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1920, 1080));

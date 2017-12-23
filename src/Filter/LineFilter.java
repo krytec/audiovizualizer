@@ -24,7 +24,7 @@ public class LineFilter {
 
         float spread = map(450, 0, (float) points, 1, 21.5f);
         for (int i = 0; i < points; i += spread) {
-            double buffer = Math.abs(fft.getBand(i) * 4);
+            double buffer = Math.abs(fft.getBand(i));
             float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
 
             gc.setStroke(Color.hsb(rgb, 1, 1, 1));

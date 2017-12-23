@@ -1,6 +1,7 @@
 package Filter;
 
 import Testing.Controller;
+import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -22,6 +23,8 @@ public class CircleFilter implements Filter{
 
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
         fft.forward(controller.getAudio().mix);
+        BeatDetect beatDetect = new BeatDetect();
+        beatDetect.detect(controller.getAudio().mix);
         double r;
         double points = fft.specSize();
         double slice = 2 * Math.PI / points;
@@ -38,9 +41,10 @@ public class CircleFilter implements Filter{
 
         for (int i = 0; i < points; i++) {
 
-            r = map(fft.getBand(i), 0, 1, 250, 255);
+            r = map(fft.getFreq(i), 0, (float) 0.5, 250, 255);
             double x2 = midx - r * Math.cos(slice*i);
             double y2 = midy - r * Math.sin(slice*i);
+
             gc.strokeLine(oldX[0], oldY[0], x2, y2);
             oldX[0] = x2;
             oldY[0] = y2;
