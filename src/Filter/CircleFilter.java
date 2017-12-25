@@ -6,11 +6,12 @@ import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class CircleFilter implements Filter{
+public class CircleFilter extends Filter{
 
     private Controller controller;
     private GraphicsContext gc;
     private FFT fft;
+    private double oldx,oldy;
 
 
     public CircleFilter(Controller controller, GraphicsContext gc){
@@ -18,9 +19,10 @@ public class CircleFilter implements Filter{
         this.controller=controller;
     }
 
-    @Override
-    public void drawFilter(double[] oldX,double[] oldY){
 
+    public void drawFilter(double[] oldX,double[] oldY){
+        oldx =  oldX[0];
+        oldy =  oldY[0];
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
         fft.forward(controller.getAudio().mix);
         BeatDetect beatDetect = new BeatDetect();
@@ -39,33 +41,60 @@ public class CircleFilter implements Filter{
 
 
 
+        /** Kreis!
+         *
+         */
         for (int i = 0; i < points; i++) {
 
-            r = map(fft.getFreq(i), 0, (float) 0.5, 250, 255);
+            r = map(fft.getBand(i), 0, 1, 250, 255);
             double x2 = midx - r * Math.cos(slice*i);
             double y2 = midy - r * Math.sin(slice*i);
-
-            gc.strokeLine(oldX[0], oldY[0], x2, y2);
-            oldX[0] = x2;
-            oldY[0] = y2;
-
+            if(beatDetect.isSnare() || beatDetect.isKick() || beatDetect.isHat()){
+                gc.setFill(Color.WHITE);
+                gc.fill();
+                gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
+            }
+            if(beatDetect.isSnare()){
+                x2 =midx + r * Math.cos(slice*i);
+                y2 = midy - r * Math.sin(slice*i);
+                gc.strokeLine(oldX[1], oldY[1], x2, y2);
+                oldX[1] = x2;
+                oldY[1] = y2;
+            }
+            else if
+                    (beatDetect.isHat()){
+                x2 =midx - r * Math.cos(slice*i);
+                y2 = midy + r * Math.sin(slice*i);
+                gc.strokeLine(oldX[2], oldY[2], x2, y2);
+                oldX[2] = x2;
+                oldY[2] = y2;
+            }
+            else if(beatDetect.isKick()){
+                x2 =midx + r * Math.cos(slice*i);
+                y2 = midy + r * Math.sin(slice*i);
+                gc.strokeLine(oldX[3], oldY[3], x2, y2);
+                oldX[3] = x2;
+                oldY[3] = y2;
+            }
+            else {
+                gc.strokeLine(oldX[0], oldY[0], x2, y2);
+                oldX[0] = x2;
+                oldY[0] = y2;
+            }
 
         }
     }
+
 
     @Override
     public void drawFilter() {
 
     }
 
-
-    @Override
-    public final float map(float value, float istart, float istop, float ostart, float ostop) {
-        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+    public double getOldx(){
+        return oldx;
     }
-
-
-
-
-
+    public double getOldy(){
+        return oldy;
+    }
 }

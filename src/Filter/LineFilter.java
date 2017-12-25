@@ -21,7 +21,8 @@ public class LineFilter {
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
         fft.forward(controller.getAudio().mix);
         double points = fft.specSize();
-
+        double midx =  gc.getCanvas().getWidth()/2;
+        double midy =  gc.getCanvas().getHeight()/2;
         float spread = map(450, 0, (float) points, 1, 21.5f);
         for (int i = 0; i < points; i += spread) {
             double buffer = Math.abs(fft.getBand(i));
@@ -29,10 +30,10 @@ public class LineFilter {
 
             gc.setStroke(Color.hsb(rgb, 1, 1, 1));
             gc.stroke();
-            gc.strokeOval(i + 720 - (7 / 2), 740 - (buffer / 2), 7, buffer);
+            gc.strokeOval(i + midx-250 - (7 / 2), midy+340 - (buffer / 2), 7, buffer);
             gc.setFill(Color.hsb(rgb, 1, 1));
             gc.fill();
-            gc.fillOval(i + 720 - (7 / 2), 740 - (buffer / 2), 7, buffer);
+            gc.fillOval(i + midx-250 - (7 / 2), midy+340 - (buffer / 2), 7, buffer);
         }
     }
     static public final float map(float value, float istart, float istop, float ostart, float ostop) {

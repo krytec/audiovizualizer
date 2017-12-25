@@ -11,19 +11,22 @@ import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import Playlist.Track;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PlaylistDrawing {
 
@@ -34,14 +37,17 @@ public class PlaylistDrawing {
     private AudioInput in;
     private FFT fft;
     private BeatDetect beatDetect;
+    private boolean showing=false;
+    private Songinformation songinformation;
     public PlaylistDrawing(Controller controller){
         this.controller=controller;
     }
 
-    public void init(VBox box){
+    public void init(VBox box) throws IOException{
 
-
-        HBox pane = new HBox();
+        Group root = new Group();
+        Pane pane = new Pane();
+        songinformation = new Songinformation(controller);
         playlist = controller.getactPlaylist();
         final Canvas canvas = new Canvas(1920,800);
         canvas.setOnMouseClicked(e-> {if(!controller.isPlaying().getValue()){controller.play(controller.getactPlaylist());}
@@ -54,9 +60,22 @@ public class PlaylistDrawing {
         beatDetect = new BeatDetect(1024,44100);
         final double[] oldX = {midx,midx,midx,midx};
         final double[] oldY = {midy,midy,midy,midy};
+        Circle circle = new Circle(midx,midy,250);
+        BufferedImage img = ImageIO.read(new File("default.png"));
+        Image im1 = SwingFXUtils.toFXImage(img,null);
+        circle.setFill(new ImagePattern(im1));
+        VBox info = songinformation.init();
 
-        in= minim.getLineIn(Minim.STEREO,1024);
-        out = minim.getLineOut(Minim.STEREO,1024);
+        circle.setOnMouseClicked(e -> {
+            if(showing==false){
+                showing = true;
+                pane.getChildren().addAll(info);
+            }else{
+                showing = false;
+                pane.getChildren().remove(1);
+            }
+
+        });
 
         controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -69,11 +88,6 @@ public class PlaylistDrawing {
                 fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
                 beatDetect.detect(controller.getAudio().mix);
                 fft.forward(controller.getAudio().mix);
-
-
-
-
-                double radius;
                 double points = fft.specSize();
                 double slice = 2 * Math.PI / points;
 
@@ -221,10 +235,17 @@ public class PlaylistDrawing {
             public void changed(ObservableValue<? extends Track> observable, Track oldValue,Track newValue) {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
+                try {
+                   Image image = SwingFXUtils.toFXImage(newValue.getImage(),null);
+                   circle.setFill(new ImagePattern(image));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        pane.getChildren().addAll(canvas);
-        box.getChildren().addAll(pane);
+        root.getChildren().addAll(canvas,pane);
+        pane.getChildren().addAll(circle);
+        box.getChildren().addAll(root);
 
     }
 

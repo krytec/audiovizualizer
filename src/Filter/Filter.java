@@ -1,9 +1,13 @@
 package Filter;
 
-public interface Filter{
-    public void drawFilter(double[] x, double[] y);
-    public void drawFilter();
-    public float map(float value, float istart, float istop, float ostart, float ostop);
+public abstract class  Filter{
+     public abstract void drawFilter();
+     public final float map(float value, float istart, float istop, float ostart, float ostop) {
+        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+     }
+
+
+
 
 
 }

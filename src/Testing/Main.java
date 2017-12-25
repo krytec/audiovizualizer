@@ -3,6 +3,7 @@ package Testing;
 import GUI.Controllbar;
 import GUI.DrawFilter;
 import GUI.PlaylistDrawing;
+import GUI.Songdrawing;
 import Mp3Player.MP3Player;
 import Playlist.Playlist;
 import Playlist.PlaylistManager;
@@ -35,10 +36,11 @@ public class Main extends Application {
         draw = new DrawFilter(controller);
         drawing = new PlaylistDrawing(controller);
         VBox root = new VBox();
-        drawing.init(root);
+
+        draw.init(root);
         controllbar.init(root);
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1920, 1080));
+        primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
     }
 
