@@ -86,6 +86,7 @@ public class DrawFilter {
                 oldY[0] = circleFilter.getOldy();
                 lineFilter.drawFilter();
 
+
             }
         });
 
@@ -94,6 +95,12 @@ public class DrawFilter {
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
+                try {
+                    Image image = SwingFXUtils.toFXImage(newValue.getImage(),null);
+                    circle.setFill(new ImagePattern(image));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

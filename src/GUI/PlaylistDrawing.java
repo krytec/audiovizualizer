@@ -22,6 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -196,26 +198,20 @@ public class PlaylistDrawing {
                         gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
                     }
                     if(beatDetect.isSnare()){
-                        x2 =midx + r * Math.cos(slice*i);
-                        y2 = midy - r * Math.sin(slice*i);
-                        gc.strokeLine(oldX[1], oldY[1], x2, y2);
-                        oldX[1] = x2;
-                        oldY[1] = y2;
+                        gc.save();
+                        gc.transform(new Affine(new Rotate(90,x2, y2)));
+                        gc.restore();
                     }
                     else if
                         (beatDetect.isHat()){
-                            x2 =midx - r * Math.cos(slice*i);
-                            y2 = midy + r * Math.sin(slice*i);
-                            gc.strokeLine(oldX[2], oldY[2], x2, y2);
-                            oldX[2] = x2;
-                            oldY[2] = y2;
+                        gc.save();
+                        gc.transform(new Affine(new Rotate(45,x2, y2)));
+                        gc.restore();
                         }
                     else if(beatDetect.isKick()){
-                        x2 =midx + r * Math.cos(slice*i);
-                        y2 = midy + r * Math.sin(slice*i);
-                        gc.strokeLine(oldX[3], oldY[3], x2, y2);
-                        oldX[3] = x2;
-                        oldY[3] = y2;
+                        gc.save();
+                        gc.transform(new Affine(new Rotate(180,x2, y2)));
+                        gc.restore();
                     }
                     else {
                         gc.strokeLine(oldX[0], oldY[0], x2, y2);
