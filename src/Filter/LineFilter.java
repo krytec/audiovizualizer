@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class LineFilter {
+public class LineFilter extends Filter {
 
     private Controller controller;
     private GraphicsContext gc;
@@ -36,7 +36,5 @@ public class LineFilter {
             gc.fillOval(i + midx-250 - (7 / 2), midy+340 - (buffer / 2), 7, buffer);
         }
     }
-    static public final float map(float value, float istart, float istop, float ostart, float ostop) {
-        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-    }
+
 }
