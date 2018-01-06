@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 import Playlist.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-
+import Filter.FilterMap;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,7 +33,7 @@ public class DrawFilter {
     private Freqfilter freqfilter;
     private Songinformation songinformation;
     private boolean showing = false;
-    private Filter.FilterMap filterMap;
+    private FilterMap filterMap;
     public DrawFilter(Controller controller){
         this.controller=controller;
     }
@@ -51,7 +51,7 @@ public class DrawFilter {
         final Canvas canvas = new Canvas(1600,800);
         gc = canvas.getGraphicsContext2D();
 
-        filterMap = new Filter.FilterMap(controller,gc);
+        filterMap = new FilterMap(controller,gc);
 
         double midx =  gc.getCanvas().getWidth()/2;
         double midy =  gc.getCanvas().getHeight()/2;

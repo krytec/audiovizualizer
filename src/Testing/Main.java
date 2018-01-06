@@ -5,6 +5,7 @@ import GUI.*;
 import Mp3Player.MP3Player;
 import Playlist.Playlist;
 import Playlist.PlaylistManager;
+import Filter.FilterMap;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -22,7 +23,7 @@ public class Main extends Application {
     private DrawFilter draw;
     private PlaylistDrawing drawing;
     private Filterlist filterlist;
-    private Filter.FilterMap filterMap;
+    private FilterMap filterMap;
     private Controllbar controllbar;
 
     @Override
@@ -38,15 +39,12 @@ public class Main extends Application {
         drawing = new PlaylistDrawing(controller);
         draw.init(root);
         filtercontroller = new Filtercontroller(draw);
-        filterMap = new Filter.FilterMap(controller,filtercontroller.getGC());
+        filterMap = new FilterMap(controller,filtercontroller.getGC());
         HashMap<String,Filter> map = filterMap.init();
         filterlist = new Filterlist(map,filtercontroller);
-
-
-
-        controllbar.init(root);
         filterlist.init(root);
-        primaryStage.setTitle("Hello World");
+        controllbar.init(root);
+        primaryStage.setTitle("AudioVisualizer");
         primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
     }

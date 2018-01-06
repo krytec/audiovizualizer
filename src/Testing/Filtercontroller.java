@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Filtercontroller {
     DrawFilter drawFilter;
+
     public Filtercontroller(DrawFilter drawFilter){
         this.drawFilter = drawFilter;
     }

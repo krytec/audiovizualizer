@@ -25,7 +25,7 @@ public class Filterlist {
         final Filter[] filter = new Filter[1];
         filterview = new ListView<>();
         map.forEach((k,f)-> filterview.getItems().add(k));
-
+        filterview.setStyle("-fx-control-inner-background:#212121;");
         filterview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

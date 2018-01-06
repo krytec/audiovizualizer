@@ -91,6 +91,7 @@ public class Controllbar {
         volume.setMin(0);
         volume.setMax(100);
         volume.setPrefSize(75,10);
+
         volume.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -103,7 +104,6 @@ public class Controllbar {
         tracklength = new Slider();
         tracklength.setMin(0);
         tracklength.setMax(5);
-        tracklength.setShowTickLabels(true);
 
         controller.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
@@ -119,7 +119,6 @@ public class Controllbar {
         });
 
         controller.isPlaying().addListener(new ChangeListener<Boolean>() {
-            @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(newValue.booleanValue()){
                     play.setText("\u23F8");
@@ -143,6 +142,7 @@ public class Controllbar {
         buttonsandslider.setAlignment(Pos.CENTER);
 
         controllbar = new VBox(5);
+        controllbar.setStyle("-fx-background-color:#212121;");
         controllbar.getChildren().addAll(tracklength,buttonsandslider);
         pane.getChildren().addAll(controllbar);
     }
