@@ -273,7 +273,7 @@ public class MP3Player{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if(length.get() < (audioplayer.getMetaData().length()/10)){
+                    if(length.get() < (audioplayer.getMetaData().length()/100)){
                         length.set(length.get()+1);
                     }
                     else{

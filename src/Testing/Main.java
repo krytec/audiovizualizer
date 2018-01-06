@@ -45,7 +45,9 @@ public class Main extends Application {
         filterlist.init(root);
         controllbar.init(root);
         primaryStage.setTitle("AudioVisualizer");
-        primaryStage.setScene(new Scene(root, 1600, 900));
+        Scene scene = new Scene(root, 1600, 900);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
