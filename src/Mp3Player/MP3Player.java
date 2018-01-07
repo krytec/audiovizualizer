@@ -35,10 +35,8 @@ public class MP3Player{
     private SimpleIntegerProperty length = new SimpleIntegerProperty(0);
     private int track = 0;
     private Track actTrack;
-    private Timeline timeline;
     private SimpleObjectProperty<Track> actTrackp = new SimpleObjectProperty<>(actTrack);
-    private BeatDetect beat;
-    private FFT fft;
+
 
     /**
      * Constructor für den Mp3Player, gibt Labels und Image mit, um diese dann zu updaten
@@ -101,7 +99,7 @@ public class MP3Player{
     public void play(){
         timer = new Timer();
         TrackTask task = new TrackTask();
-        timer.schedule(task, 100, 100);
+        timer.schedule(task, 0, 100);
         playing=true;
         System.out.print(actTrack.getFile());
         audioplayer.play();
@@ -273,7 +271,7 @@ public class MP3Player{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if(length.get() < (audioplayer.getMetaData().length()/100)){
+                    if(length.get() < (actPlaylist.getTrack(track).getLength())){
                         length.set(length.get()+1);
                     }
                     else{
@@ -302,26 +300,7 @@ public class MP3Player{
         return this.actTrackp;
     }
 
-    public int getBeat(){
-        int beats = 0;
-        if(isPlaying()){
-            beat = new BeatDetect();
-            beat.detect(audioplayer.mix);
-            if(beat.isOnset()){
-                beats=80;
-            }else{
-                beats=20;
-            }
-        }
-        return beats;
-    }
 
-    public FFT getFFT(){
-        fft=new FFT(audioplayer.bufferSize(),audioplayer.sampleRate());
-        fft.forward(audioplayer.mix);
-        return fft;
-
-    }
 
     public AudioPlayer getAudioplayer() {
         return audioplayer;

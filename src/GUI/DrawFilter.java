@@ -10,6 +10,8 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,7 +40,7 @@ public class DrawFilter {
         this.controller=controller;
     }
 
-    public void init(VBox box)throws IOException{
+    public void init(BorderPane box)throws IOException{
 
         Group root = new Group();
         Pane pane = new Pane();
@@ -52,7 +54,6 @@ public class DrawFilter {
         gc = canvas.getGraphicsContext2D();
 
         filterMap = new FilterMap(controller,gc);
-
         double midx =  gc.getCanvas().getWidth()/2;
         double midy =  gc.getCanvas().getHeight()/2;
         gc.setFill(Color.BLACK);
@@ -96,11 +97,7 @@ public class DrawFilter {
                     }
                     filter.drawFilter();
                 }
-               /** circleFilter.drawFilter(oldX,oldY);
-                oldX[0] = circleFilter.getOldx();
-                oldY[0] = circleFilter.getOldy();
-                lineFilter.drawFilter();
-                freqfilter.drawFilter(); **/
+
 
 
             }
@@ -123,7 +120,7 @@ public class DrawFilter {
 
         root.getChildren().addAll(canvas,pane);
         pane.getChildren().addAll(circle);
-        box.getChildren().addAll(root);
+        box.setCenter(root);
     }
 
     public void setFilter(Filter filter){

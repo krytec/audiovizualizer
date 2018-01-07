@@ -1,18 +1,19 @@
 package GUI;
 
+import Filter.Filter;
 import Testing.Controller;
+import Testing.Filtercontroller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import Playlist.*;
+
+import java.util.HashMap;
 
 
 /**
@@ -21,26 +22,30 @@ import Playlist.*;
  */
 public class Controllbar {
     private Playlist playlist;
-    private Button play,shuffle,stop,next,previous,repeat;
+    private Button play,shuffle,stop,next,previous,repeat,filter;
     private Slider volume,tracklength;
     private VBox controllbar;
     private HBox PlayPauseStop,buttonsandslider;
     private Controller controller;
+    private ListView<String> filterview;
+    private HashMap<String,Filter> map;
+    private Filtercontroller filtercontroller;
 
     /**
      * Standard constructor für eine Controllbar
      * @param controller Controller der mit den GUI interagiert
      */
-    public Controllbar(Controller controller){
+    public Controllbar(Controller controller, HashMap<String,Filter> map, Filtercontroller filtercontroller){
         this.controller =controller;
-
+        this.map=map;
+        this.filtercontroller=filtercontroller;
     }
 
     /**
      * Initialisiert eine Controllbar
      * @param pane das Layout auf dem die Controllbar ist
      */
-    public void init(VBox pane){
+    public void init(BorderPane pane){
         playlist= controller.getactPlaylist();
         play = new Button("\u23F5");
         play.setPrefSize(35,10);
@@ -87,6 +92,11 @@ public class Controllbar {
             }
         });
         repeat.setPrefSize(50,10);
+
+        filter= new Button("Filter");
+        filter.setPrefSize(50,10);
+
+
         volume = new Slider();
         volume.setMin(0);
         volume.setMax(100);
@@ -126,10 +136,24 @@ public class Controllbar {
                 }
             }
         });
+
+        final Filter[] filter = new Filter[1];
+        filterview = new ListView<>();
+        ComboBox<String> filterComboBox = new ComboBox<String>();
+
+        map.forEach((k,f)-> filterComboBox.getItems().add(k));
+        filterComboBox.getSelectionModel().selectFirst();
+        filterComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                filter[0] = map.get(newValue);
+                filtercontroller.setFilter(filter[0]);
+            }
+        });
         PlayPauseStop = new HBox(5);
         PlayPauseStop.setAlignment(Pos.BASELINE_CENTER);
         PlayPauseStop.setPadding(new Insets(0,0,10,0));
-        PlayPauseStop.getChildren().addAll(shuffle,previous,play,stop,next,repeat);
+        PlayPauseStop.getChildren().addAll(shuffle,previous,play,stop,next,repeat,filterComboBox);
         PlayPauseStop.setPrefSize(300,10);
         HBox.setHgrow(PlayPauseStop, Priority.ALWAYS);
         HBox.setHgrow(play,Priority.ALWAYS);
@@ -141,10 +165,12 @@ public class Controllbar {
         buttonsandslider.setAlignment(Pos.CENTER);
         controllbar = new VBox(5);
         controllbar.getChildren().addAll(tracklength,buttonsandslider);
+        pane.setBottom(controllbar);
 
-        pane.getChildren().addAll(controllbar);
     }
 
-
+    public Button getFilter(){
+        return filter;
+    }
 
 }

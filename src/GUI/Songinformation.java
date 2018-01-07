@@ -30,8 +30,8 @@ public class Songinformation {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
                 titel.setText(newValue.getTitel());
-                album.setText(newValue.getAlbum());
-                interpret.setText(newValue.getAuthor());
+                album.setText(newValue.getAlbum().equals(" ")? "No Album" : newValue.getAlbum());
+                interpret.setText(newValue.getAuthor().equals(" ")? "No Interpret" : newValue.getAuthor());
                 laenge.setText(String.valueOf(newValue.getLength()));
             }
         });

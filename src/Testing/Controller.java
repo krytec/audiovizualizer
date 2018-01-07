@@ -161,13 +161,5 @@ public class Controller {
         return shuffle;
     }
 
-    public int getBeats(){
-        return player.getBeat();
-    }
-
-    public FFT getFFT(){
-        return player.getFFT();
-    }
-
     public AudioPlayer getAudio() { return player.getAudioplayer();}
 }
