@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Main extends Application {
@@ -26,6 +27,7 @@ public class Main extends Application {
     private PlaylistDrawing drawing;
     private FilterMap filterMap;
     private Controllbar controllbar;
+    private Options options;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,17 +39,31 @@ public class Main extends Application {
         controller = new Controller(player,manager,playlist);
 
         draw = new DrawFilter(controller);
-        drawing = new PlaylistDrawing(controller);
         draw.init(root);
         filtercontroller = new Filtercontroller(draw);
+        options = new Options(filtercontroller);
+
         filterMap = new FilterMap(controller,filtercontroller.getGC());
         HashMap<String,Filter> map = filterMap.init();
         controllbar = new Controllbar(controller,map,filtercontroller);
         controllbar.init(root);
         primaryStage.setTitle("AudioVisualizer");
-        Scene scene = new Scene(root, 1600, 900);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        primaryStage.setScene(scene);
+
+        Scene option = options.init();
+        option.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        options.getOk().setOnAction(e -> {
+            try {
+                draw.init(root);
+                Scene scene = new Scene(root, options.getWidth(), options.getHeight()+100);
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                primaryStage.setScene(scene);
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        primaryStage.setScene(option);
         primaryStage.show();
     }
 

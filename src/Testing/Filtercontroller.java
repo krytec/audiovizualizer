@@ -18,4 +18,12 @@ public class Filtercontroller {
     public GraphicsContext getGC(){
         return drawFilter.getGC();
     }
+
+    public void setHeight(int height){
+        drawFilter.setHeight(height);
+    }
+
+    public void setWidth(int width){
+        drawFilter.setWidth(width);
+    }
 }

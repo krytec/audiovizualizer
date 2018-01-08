@@ -36,21 +36,24 @@ public class DrawFilter {
     private Songinformation songinformation;
     private boolean showing = false;
     private FilterMap filterMap;
+    private int width,height;
     public DrawFilter(Controller controller){
         this.controller=controller;
+        width=1600;
+        height=800;
     }
 
     public void init(BorderPane box)throws IOException{
 
         Group root = new Group();
         Pane pane = new Pane();
-        pane.setMaxWidth(1920);
-        pane.setMaxHeight(800);
+        pane.setMaxWidth(width);
+        pane.setMaxHeight(height);
 
 
         songinformation = new Songinformation(controller);
         playlist = controller.getactPlaylist();
-        final Canvas canvas = new Canvas(1600,800);
+        final Canvas canvas = new Canvas(width,height);
         gc = canvas.getGraphicsContext2D();
 
         filterMap = new FilterMap(controller,gc);
@@ -129,6 +132,14 @@ public class DrawFilter {
 
     public GraphicsContext getGC(){
         return gc;
+    }
+
+    public void setWidth(int width){
+        this.width=width;
+    }
+
+    public void setHeight(int height){
+        this.height=height;
     }
 }
 
