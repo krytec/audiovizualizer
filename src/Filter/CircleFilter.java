@@ -30,8 +30,7 @@ public class CircleFilter extends Filter{
         double r;
         double points = fft.specSize();
         double slice = 2 * Math.PI / points;
-        double midx =  gc.getCanvas().getWidth()/2;
-        double midy =  gc.getCanvas().getHeight()/2;
+
         float spread = map(450, 0, (float) points, 1, 21.5f);
         for (int i = 0; i < points; i += spread) {
             float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
@@ -45,8 +44,9 @@ public class CircleFilter extends Filter{
          *
          */
         for (int i = 0; i < points; i++) {
-
-            r = map(fft.getBand(i), 0, 1, 250, 255);
+            double midx =  gc.getCanvas().getWidth()/2;
+            double midy =  gc.getCanvas().getHeight()/2;
+            r = map(fft.getBand(i), 0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 5);
             double x2 = midx - r * Math.cos(slice*i);
             double y2 = midy - r * Math.sin(slice*i);
             if(beatDetect.isSnare() || beatDetect.isKick() || beatDetect.isHat()){

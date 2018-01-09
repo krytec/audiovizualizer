@@ -36,41 +36,69 @@ public class DrawFilter {
     private Songinformation songinformation;
     private boolean showing = false;
     private FilterMap filterMap;
-    private int width,height;
+    private double width,height;
+    private Canvas canvas;
     public DrawFilter(Controller controller){
         this.controller=controller;
-        width=1600;
-        height=800;
+
     }
 
     public void init(BorderPane box)throws IOException{
 
         Group root = new Group();
         Pane pane = new Pane();
-        pane.setMaxWidth(width);
-        pane.setMaxHeight(height);
+
 
 
         songinformation = new Songinformation(controller);
         playlist = controller.getactPlaylist();
-        final Canvas canvas = new Canvas(width,height);
+        canvas = new Canvas(box.getWidth(),box.getHeight()-150);
         gc = canvas.getGraphicsContext2D();
+        final double[] midx = {gc.getCanvas().getWidth() / 2};
+        final double[] midy = {gc.getCanvas().getHeight() / 2};
+        final double[] oldX = {midx[0], midx[0], midx[0], midx[0]};
+        final double[] oldY = {midy[0], midy[0], midy[0], midy[0]};
+        Circle circle = new Circle(midx[0], midy[0],gc.getCanvas().getHeight()/4);
+        BufferedImage img = ImageIO.read(new File("default.png"));
+        Image im1 = SwingFXUtils.toFXImage(img,null);
+        circle.setFill(new ImagePattern(im1));
 
+        canvas.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+               circle.setRadius(canvas.getHeight()/4);
+               circle.setCenterY(canvas.getHeight()/2);
+               circle.setCenterX(canvas.getWidth()/2);
+                midx[0] =canvas.getWidth()/2;
+                midy[0] =canvas.getHeight()/2;
+                oldX[0]=midx[0];
+                oldY[0]=midy[0];
+
+            }
+        });
+        canvas.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                circle.setRadius(canvas.getHeight()/4);
+                circle.setCenterY(canvas.getHeight()/2);
+                circle.setCenterX(canvas.getWidth()/2);
+                midx[0] =canvas.getWidth()/2;
+                midy[0] =canvas.getHeight()/2;
+                oldX[0]=midx[0];
+                oldY[0]=midy[0];
+            }
+        });
         filterMap = new FilterMap(controller,gc);
-        double midx =  gc.getCanvas().getWidth()/2;
-        double midy =  gc.getCanvas().getHeight()/2;
+
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         circleFilter = new CircleFilter(controller,gc);
         lineFilter = new LineFilter(controller,gc);
         freqfilter = new Freqfilter(controller,gc);
-        final double[] oldX = {midx,midx,midx,midx};
-        final double[] oldY = {midy,midy,midy,midy};
 
-        Circle circle = new Circle(midx,midy,250);
-        BufferedImage img = ImageIO.read(new File("default.png"));
-        Image im1 = SwingFXUtils.toFXImage(img,null);
-        circle.setFill(new ImagePattern(im1));
+
+
         VBox info = songinformation.init();
 
         circle.setOnMouseClicked(e -> {
@@ -134,12 +162,12 @@ public class DrawFilter {
         return gc;
     }
 
-    public void setWidth(int width){
-        this.width=width;
+    public void setWidth(double width){
+        canvas.setWidth(width);
     }
 
-    public void setHeight(int height){
-        this.height=height;
+    public void setHeight(double height){
+        canvas.setHeight(height);
     }
 }
 

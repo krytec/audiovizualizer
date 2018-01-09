@@ -11,7 +11,16 @@
 .button{
 -fx-background-color:#212121;
 -fx-text-fill:#000000;
+-fx-button-background-radius: 30;
+-fx-border-color:#666666;
+
 }
+
+.button:pressed{
+-fx-border-color:#CBC0C0;
+}
+
+
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
@@ -34,4 +43,8 @@
 .list-view {
     -fx-background-insets: 0;
       -fx-padding: 0;
+}
+
+.choice-box{
+    -fx-background-color:#212121;
 }

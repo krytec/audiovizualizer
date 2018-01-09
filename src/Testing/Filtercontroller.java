@@ -19,11 +19,11 @@ public class Filtercontroller {
         return drawFilter.getGC();
     }
 
-    public void setHeight(int height){
+    public void setHeight(double height){
         drawFilter.setHeight(height);
     }
 
-    public void setWidth(int width){
+    public void setWidth(double width){
         drawFilter.setWidth(width);
     }
 }
