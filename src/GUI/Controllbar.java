@@ -114,6 +114,7 @@ public class Controllbar {
         tracklength.setMin(0);
         tracklength.setMax(5);
 
+
         controller.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {

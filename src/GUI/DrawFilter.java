@@ -67,7 +67,7 @@ public class DrawFilter {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-               circle.setRadius(canvas.getHeight()/4);
+               circle.setRadius(canvas.getWidth()>canvas.getHeight()?canvas.getHeight()/4:canvas.getWidth()/4);
                circle.setCenterY(canvas.getHeight()/2);
                circle.setCenterX(canvas.getWidth()/2);
                 midx[0] =canvas.getWidth()/2;
@@ -80,13 +80,14 @@ public class DrawFilter {
         canvas.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                circle.setRadius(canvas.getHeight()/4);
+                circle.setRadius(canvas.getWidth()>canvas.getHeight()?canvas.getHeight()/4:canvas.getWidth()/4);
                 circle.setCenterY(canvas.getHeight()/2);
                 circle.setCenterX(canvas.getWidth()/2);
                 midx[0] =canvas.getWidth()/2;
                 midy[0] =canvas.getHeight()/2;
                 oldX[0]=midx[0];
                 oldY[0]=midy[0];
+
             }
         });
         filterMap = new FilterMap(controller,gc);
@@ -118,13 +119,18 @@ public class DrawFilter {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 if(filter == null){
-                    lineFilter.drawFilter();
+                    filter=lineFilter;
+
                 }
                 else {
                     if(filter instanceof CircleFilter){
                         ((CircleFilter) filter).drawFilter(oldX,oldY);
                         oldX[0] = ((CircleFilter)filter).getOldx();
                         oldY[0] = ((CircleFilter)filter).getOldy();
+                    }
+                    if(filter instanceof  LineFilter){
+                        canvas.minWidth(100);
+                        canvas.minHeight(100);
                     }
                     filter.drawFilter();
                 }

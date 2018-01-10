@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,10 @@ public class Songinformation {
             }
         });
         info.setPadding(new Insets(20,0,0,20));
+        VBox.setVgrow(titel, Priority.ALWAYS);
+        VBox.setVgrow(album, Priority.ALWAYS);
+        VBox.setVgrow(interpret, Priority.ALWAYS);
+        VBox.setVgrow(laenge, Priority.ALWAYS);
         info.getChildren().addAll(titel,album,interpret,laenge);
         return info;
     }
