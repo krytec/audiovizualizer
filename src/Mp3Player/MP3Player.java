@@ -251,7 +251,7 @@ public class MP3Player{
      * getter für die Länge des aktuellen Tracks
      * @return Länge in ms
      */
-    public int getLength(){return actPlaylist.getTrack(track).getLength();}
+    public double getLength(){return actPlaylist.getTrack(track).getLength();}
 
     /**
      * getter für den aktuellen Track

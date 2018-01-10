@@ -16,7 +16,7 @@ public class Track {
     String file,titel,album,interpret;
     Mp3File mp3;
     byte[] image;
-    int length;
+    double length;
 
     /**
      * Constructor eines Tracks
@@ -85,7 +85,7 @@ public class Track {
      * Länge des Songs
      * @return wenn keine Länge vorhanden 0, ansonsten die Länge des Songs in Sekunden
      */
-    public int getLength(){
+    public double getLength(){
 
             return length/10;
 

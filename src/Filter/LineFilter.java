@@ -21,11 +21,11 @@ public class LineFilter extends Filter {
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
         fft.forward(controller.getAudio().mix);
         double points = fft.specSize();
-        double width = gc.getCanvas().getWidth();
+        double width = gc.getCanvas().getWidth()/2;
         double x = gc.getCanvas().getWidth()/4;
         double y = gc.getCanvas().getHeight()/2-gc.getCanvas().getHeight()/10;
-        float spread = map(200, 0,  (float)points, 5, (float) x/20);
-        for (int i = 0; i < points; i+=spread) {
+        float spread = map(200, 0,  width<points? (float)width:(float)points, 5, (float) x/20);
+        for (int i = 0; i < (width<points? (float)width:(float)points); i+=spread) {
 
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
