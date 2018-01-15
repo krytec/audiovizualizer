@@ -14,7 +14,7 @@ public class SwitchButton extends HBox {
 
     public SwitchButton(){
         on.setText("off");
-        this.getChildren().addAll(onoff,on);
+        this.getChildren().addAll(on,onoff);
         onoff.setOnAction(e-> switched.set(!switched.getValue()));
         on.setOnMouseClicked(e->switched.set(!switched.getValue()) );
 

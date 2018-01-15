@@ -8,10 +8,12 @@ import Playlist.Playlist;
 import Playlist.PlaylistManager;
 import Main.Controller;
 import Main.Filtercontroller;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class AudioVisualiser {
     private Options options;
     private FilterMap filterMap;
     private Controllbar controllbar;
-
+    private SimpleBooleanProperty showoption = new SimpleBooleanProperty(false);
 
     public AudioVisualiser(){
 
@@ -42,6 +44,7 @@ public class AudioVisualiser {
         controller = new Controller(player,manager,playlist);
         options = new Options();
         OptionsController optionsController = new OptionsController(options);
+        VBox option = optionsController.options();
         draw = new DrawFilter(controller,optionsController);
         draw.init(root);
         filtercontroller = new Filtercontroller(draw);
@@ -49,14 +52,19 @@ public class AudioVisualiser {
         HashMap<String,Filter> map = filterMap.init();
         controllbar = new Controllbar(controller,map,filtercontroller,optionsController);
         controllbar.init(root);
-
+        root.setRight(option);
+        root.getRight().setVisible(false);
 
 
         root.setPrefSize(800,600);
         root.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                filtercontroller.setWidth(newValue.doubleValue());
+                if(showoption.getValue()){
+                    filtercontroller.setWidth(root.getWidth()-150);
+                }else {
+                    filtercontroller.setWidth(newValue.doubleValue());
+                }
 
             }
         });
@@ -70,8 +78,23 @@ public class AudioVisualiser {
 
         Scene scene = new Scene(root,800,600);
         controllbar.getOptions().setOnAction(e-> {
-            Scene options = new Scene(optionsController.options(),800,600);
+            if(showoption.getValue()){
+                root.getRight().setVisible(false);
+                showoption.set(false);
+            }else {
+                root.getRight().setVisible(true);
+                showoption.set(true);
+            }
 
+        });
+
+        showoption.addListener((a,b,c)-> {
+            if(c){
+                filtercontroller.setWidth(root.getWidth()-150);
+            }
+            else{
+                filtercontroller.setWidth(root.getWidth());
+            }
         });
        return scene;
 

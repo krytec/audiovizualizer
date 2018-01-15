@@ -3,11 +3,8 @@ package GUI;
 import CustomButtons.SwitchButton;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 
@@ -15,7 +12,6 @@ import javafx.scene.layout.VBox;
 public class Options {
 
     private SimpleBooleanProperty circleb,lineb,backgroundb,freqb;
-    private Button close;
     public Options(){
 
     }
@@ -30,14 +26,17 @@ public class Options {
         Label freqlabel = new Label("Freq");
         HBox backgroundSwitch = new HBox(5);
         Label backgroundlabel = new Label("Background");
-        close = new Button("Close");
-
-
         options.setAlignment(Pos.CENTER);
         SwitchButton circle = new SwitchButton();
         SwitchButton line = new SwitchButton();
         SwitchButton background = new SwitchButton();
         SwitchButton freq = new SwitchButton();
+        circle.setAlignment(Pos.CENTER_RIGHT);
+        background.setAlignment(Pos.CENTER);
+        backgroundlabel.setAlignment(Pos.CENTER_LEFT);
+        circlelabel.setAlignment(Pos.CENTER_LEFT);
+        linelabel.setAlignment(Pos.CENTER_LEFT);
+        freqlabel.setAlignment(Pos.CENTER_LEFT);
         circleSwitch.getChildren().addAll(circlelabel,circle);
         lineSwitch.getChildren().addAll(linelabel,line);
         freqSwitch.getChildren().addAll(freqlabel,freq);
@@ -50,7 +49,10 @@ public class Options {
         lineb = line.switchedProperty();
         backgroundb = background.switchedProperty();
         freqb = freq.switchedProperty();
-        options.getChildren().addAll(circleSwitch,freqSwitch,lineSwitch,backgroundSwitch,close);
+
+        options.getChildren().addAll(circleSwitch,freqSwitch,lineSwitch,backgroundSwitch);
+        options.setAlignment(Pos.CENTER_LEFT);
+
         return options;
 
 
@@ -72,7 +74,5 @@ public class Options {
         return lineb;
     }
 
-    public Button getClose(){
-        return close;
-    }
+
 }

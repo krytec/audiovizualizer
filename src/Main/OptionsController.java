@@ -2,6 +2,7 @@ package Main;
 
 import GUI.Options;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class OptionsController {
