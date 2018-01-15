@@ -1,9 +1,8 @@
 package Filter;
 
-import Testing.Controller;
+import Main.Controller;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class LineFilter extends Filter {
@@ -23,11 +22,11 @@ public class LineFilter extends Filter {
         double points = fft.specSize();
         double width = gc.getCanvas().getWidth()/2;
         width = width>111?width:112;
-        double x = gc.getCanvas().getWidth()/4;
+        double x = gc.getCanvas().getWidth()/6;
         double y = gc.getCanvas().getHeight()/2-gc.getCanvas().getHeight()/10;
         float spread = map(200, 0,  width<points? (float)width:(float)points, 1, (float) x/20);
 
-        for (int i = 0; i < (width<points? (float)width:(float)points); i+=spread) {
+        for (int i = 0; i < (width<points/2? (float)width:(float)points/2); i+=spread) {
 
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
@@ -41,6 +40,7 @@ public class LineFilter extends Filter {
             gc.fill();
             gc.fillOval(i + midx-x, midy+y- (buffer/2), 7, buffer);
         }
+
     }
 
 }

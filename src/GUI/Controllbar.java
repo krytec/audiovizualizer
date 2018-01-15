@@ -1,15 +1,14 @@
 package GUI;
 
 import Filter.Filter;
-import Testing.Controller;
-import Testing.Filtercontroller;
+import Main.Controller;
+import Main.Filtercontroller;
+import Main.OptionsController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import Playlist.*;
 
@@ -22,7 +21,7 @@ import java.util.HashMap;
  */
 public class Controllbar {
     private Playlist playlist;
-    private Button play,shuffle,stop,next,previous,repeat,filter;
+    private Button play,shuffle,stop,next,previous,repeat,options;
     private Slider volume,tracklength;
     private VBox controllbar;
     private HBox PlayPauseStop,buttonsandslider;
@@ -30,15 +29,17 @@ public class Controllbar {
     private ListView<String> filterview;
     private HashMap<String,Filter> map;
     private Filtercontroller filtercontroller;
+    private OptionsController optionsController;
 
     /**
      * Standard constructor für eine Controllbar
      * @param controller Controller der mit den GUI interagiert
      */
-    public Controllbar(Controller controller, HashMap<String,Filter> map, Filtercontroller filtercontroller){
+    public Controllbar(Controller controller, HashMap<String,Filter> map, Filtercontroller filtercontroller,OptionsController optionsController){
         this.controller =controller;
         this.map=map;
         this.filtercontroller=filtercontroller;
+        this.optionsController=optionsController;
     }
 
     /**
@@ -93,8 +94,8 @@ public class Controllbar {
         });
         repeat.setPrefSize(50,10);
 
-        filter= new Button("Filter");
-        filter.setPrefSize(50,10);
+        options= new Button("Filter");
+        options.setPrefSize(50,10);
 
 
         volume = new Slider();
@@ -154,7 +155,7 @@ public class Controllbar {
         PlayPauseStop = new HBox(5);
         PlayPauseStop.setAlignment(Pos.BASELINE_CENTER);
         PlayPauseStop.setPadding(new Insets(0,0,10,0));
-        PlayPauseStop.getChildren().addAll(shuffle,previous,play,stop,next,repeat,filterComboBox);
+        PlayPauseStop.getChildren().addAll(shuffle,previous,play,stop,next,repeat,options);
         PlayPauseStop.setPrefSize(300,10);
         HBox.setHgrow(PlayPauseStop, Priority.ALWAYS);
         HBox.setHgrow(play,Priority.ALWAYS);
@@ -164,14 +165,16 @@ public class Controllbar {
         HBox.setHgrow(PlayPauseStop,Priority.ALWAYS);
         HBox.setHgrow(volume,Priority.ALWAYS);
         buttonsandslider.setAlignment(Pos.CENTER);
+
         controllbar = new VBox(5);
         controllbar.getChildren().addAll(tracklength,buttonsandslider);
+
         pane.setBottom(controllbar);
 
     }
 
-    public Button getFilter(){
-        return filter;
+    public Button getOptions(){
+        return options;
     }
 
 }

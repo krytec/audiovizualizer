@@ -1,4 +1,4 @@
-package Testing;
+package Main;
 
 
 import Mp3Player.MP3Player;
@@ -6,7 +6,6 @@ import Playlist.PlaylistManager;
 import Playlist.Track;
 import Playlist.Playlist;
 import ddf.minim.AudioPlayer;
-import ddf.minim.analysis.FFT;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;

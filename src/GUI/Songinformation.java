@@ -1,16 +1,13 @@
 package GUI;
 
 import Playlist.Track;
-import Testing.Controller;
+import Main.Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.util.concurrent.TimeUnit;
 
 public class Songinformation {
     private Controller controller;

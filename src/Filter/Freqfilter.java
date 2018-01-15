@@ -1,7 +1,6 @@
 package Filter;
 
-import Testing.Controller;
-import ddf.minim.analysis.BeatDetect;
+import Main.Controller;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

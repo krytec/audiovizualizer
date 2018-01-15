@@ -1,8 +1,9 @@
 package GUI;
 
 import Filter.*;
+import Main.OptionsController;
 import Playlist.Playlist;
-import Testing.Controller;
+import Main.Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -10,7 +11,6 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -27,26 +27,29 @@ import java.io.IOException;
 public class DrawFilter {
 
     private Controller controller;
+    private OptionsController optionsController;
     private Playlist playlist;
     private Filter filter;
     private GraphicsContext gc;
     private CircleFilter circleFilter;
     private LineFilter lineFilter;
     private Freqfilter freqfilter;
+    private BackgroundFilter backgroundFilter;
     private Songinformation songinformation;
     private boolean showing = false;
-    private FilterMap filterMap;
-    private double width,height;
-    private Canvas canvas;
-    public DrawFilter(Controller controller){
-        this.controller=controller;
+    private Pane pane;
+    private boolean drawcircle,drawfreq,drawline,drawbackground;
 
+    private Canvas canvas;
+    public DrawFilter(Controller controller, OptionsController optionsController){
+        this.controller=controller;
+        this.optionsController=optionsController;
     }
 
     public void init(BorderPane box)throws IOException{
 
         Group root = new Group();
-        Pane pane = new Pane();
+        pane = new Pane();
 
 
 
@@ -70,10 +73,14 @@ public class DrawFilter {
                circle.setRadius(canvas.getWidth()>canvas.getHeight()?canvas.getHeight()/4:canvas.getWidth()/4);
                circle.setCenterY(canvas.getHeight()/2);
                circle.setCenterX(canvas.getWidth()/2);
-                midx[0] =canvas.getWidth()/2;
-                midy[0] =canvas.getHeight()/2;
-                oldX[0]=midx[0];
-                oldY[0]=midy[0];
+               midx[0] =canvas.getWidth()/2;
+               midy[0] =canvas.getHeight()/2;
+               oldX[0]=midx[0];
+               oldY[0]=midy[0];
+                if(controller.isPause()) {
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                }
 
             }
         });
@@ -87,16 +94,25 @@ public class DrawFilter {
                 midy[0] =canvas.getHeight()/2;
                 oldX[0]=midx[0];
                 oldY[0]=midy[0];
+                if(controller.isPause()) {
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                }
 
             }
         });
-        filterMap = new FilterMap(controller,gc);
+
 
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
         circleFilter = new CircleFilter(controller,gc);
         lineFilter = new LineFilter(controller,gc);
         freqfilter = new Freqfilter(controller,gc);
+        backgroundFilter = new BackgroundFilter(controller,gc);
+
+
+
 
 
 
@@ -112,29 +128,30 @@ public class DrawFilter {
             }
 
         });
-
+        optionsController.circle().addListener((a,b,c)-> drawcircle=c);
+        optionsController.freq().addListener((a,b,c)-> drawfreq=c);
+        optionsController.line().addListener((a,b,c)-> drawline=c);
+        optionsController.backround().addListener((a,b,c)-> drawbackground=c);
       controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-                if(filter == null){
-                    filter=lineFilter;
-
-                }
-                else {
-                    if(filter instanceof CircleFilter){
-                        ((CircleFilter) filter).drawFilter(oldX,oldY);
-                        oldX[0] = ((CircleFilter)filter).getOldx();
-                        oldY[0] = ((CircleFilter)filter).getOldy();
-                    }
-                    if(filter instanceof  LineFilter){
-                        canvas.minWidth(100);
-                        canvas.minHeight(100);
-                    }
-                    filter.drawFilter();
+                if(drawcircle){
+                    circleFilter.drawFilter(oldX,oldY);
+                    oldX[0]=circleFilter.getOldx();
+                    oldY[0]=circleFilter.getOldy();
                 }
 
+                if(drawfreq){
+                    freqfilter.drawFilter();
+                }
+                if(drawbackground){
+                    backgroundFilter.drawFilter();
+                }
+                if(drawline){
+                    lineFilter.drawFilter();
+                }
 
 
             }
@@ -175,5 +192,8 @@ public class DrawFilter {
     public void setHeight(double height){
         canvas.setHeight(height);
     }
+
+    public Pane getPane(){return pane;}
+
 }
 

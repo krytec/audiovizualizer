@@ -1,7 +1,7 @@
 package GUI;
 
 import Playlist.Playlist;
-import Testing.Controller;
+import Main.Controller;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
@@ -15,7 +15,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
