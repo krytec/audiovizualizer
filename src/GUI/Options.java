@@ -2,6 +2,7 @@ package GUI;
 
 import CustomButtons.SwitchButton;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -47,6 +48,14 @@ public class Options {
 
         buttons.getChildren().addAll(circle,line,freq,background);
         names.getChildren().addAll(circlelabel,linelabel,freqlabel,backgroundlabel);
+        VBox.setMargin(circlelabel,new Insets(5));
+        VBox.setMargin(linelabel,new Insets(5));
+        VBox.setMargin(freqlabel,new Insets(5));
+        VBox.setMargin(backgroundlabel,new Insets(5));
+        VBox.setMargin(circle,new Insets(0,5,10,5));
+        VBox.setMargin(line,new Insets(5,5,10,5));
+        VBox.setMargin(freq,new Insets(5,5,10,5));
+        VBox.setMargin(background,new Insets(5,5,10,5));
         content.getChildren().addAll(names,buttons);
         options.getChildren().addAll(content);
 

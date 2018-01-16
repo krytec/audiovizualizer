@@ -101,13 +101,16 @@ public class Controllbar {
         volume = new Slider();
         volume.setMin(0);
         volume.setMax(100);
-        volume.setPrefSize(75,10);
+        volume.setPrefSize(40,10);
         volume.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 float volume;
                 volume = newValue.floatValue()/100;
-                controller.volume(volume);
+                if(controller.isPlaying().getValue()) {
+                    controller.volume(volume);
+                }
+
             }
         });
         volume.setShowTickLabels(true);
@@ -157,7 +160,6 @@ public class Controllbar {
         PlayPauseStop.setPadding(new Insets(0,0,10,0));
         PlayPauseStop.getChildren().addAll(shuffle,previous,play,stop,next,repeat,options);
         PlayPauseStop.setPrefSize(300,10);
-        HBox.setHgrow(PlayPauseStop, Priority.ALWAYS);
         HBox.setHgrow(play,Priority.ALWAYS);
         HBox.setHgrow(stop,Priority.ALWAYS);
         buttonsandslider = new HBox(5);
