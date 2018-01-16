@@ -18,40 +18,37 @@ public class Options {
 
     public VBox init(){
         VBox options = new VBox(5);
-        HBox circleSwitch = new HBox(5);
+        HBox content = new HBox (5);
+        VBox names = new VBox(20);
+        VBox buttons = new VBox(5);
+
         Label circlelabel = new Label("Circle");
-        HBox lineSwitch = new HBox(5);
+
         Label linelabel = new Label("Line");
-        HBox freqSwitch = new HBox(5);
+
         Label freqlabel = new Label("Freq");
-        HBox backgroundSwitch = new HBox(5);
+
         Label backgroundlabel = new Label("Background");
-        options.setAlignment(Pos.CENTER);
+
         SwitchButton circle = new SwitchButton();
         SwitchButton line = new SwitchButton();
         SwitchButton background = new SwitchButton();
         SwitchButton freq = new SwitchButton();
-        circle.setAlignment(Pos.CENTER_RIGHT);
-        background.setAlignment(Pos.CENTER);
-        backgroundlabel.setAlignment(Pos.CENTER_LEFT);
-        circlelabel.setAlignment(Pos.CENTER_LEFT);
-        linelabel.setAlignment(Pos.CENTER_LEFT);
-        freqlabel.setAlignment(Pos.CENTER_LEFT);
-        circleSwitch.getChildren().addAll(circlelabel,circle);
-        lineSwitch.getChildren().addAll(linelabel,line);
-        freqSwitch.getChildren().addAll(freqlabel,freq);
-        backgroundSwitch.getChildren().addAll(backgroundlabel,background);
-        circleSwitch.setAlignment(Pos.CENTER);
-        lineSwitch.setAlignment(Pos.CENTER);
-        freqSwitch.setAlignment(Pos.CENTER);
-        backgroundSwitch.setAlignment(Pos.CENTER);
+
+        options.setAlignment(Pos.CENTER);
+        options.setId("optionBox");
+        names.setId("nameBox");
+        buttons.setId("buttonBox");
+
         circleb = circle.switchedProperty();
         lineb = line.switchedProperty();
         backgroundb = background.switchedProperty();
         freqb = freq.switchedProperty();
 
-        options.getChildren().addAll(circleSwitch,freqSwitch,lineSwitch,backgroundSwitch);
-        options.setAlignment(Pos.CENTER_LEFT);
+        buttons.getChildren().addAll(circle,line,freq,background);
+        names.getChildren().addAll(circlelabel,linelabel,freqlabel,backgroundlabel);
+        content.getChildren().addAll(names,buttons);
+        options.getChildren().addAll(content);
 
         return options;
 

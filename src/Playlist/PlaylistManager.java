@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -52,7 +53,7 @@ public class PlaylistManager {
                     if (mp3.getId3v1Tag().getTitle() != null) {
                         titel = mp3.getId3v1Tag().getTitle();
                     
-                    if (titel == "") {
+                    if (Objects.equals(titel, "")) {
                         titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length - 1];
 
                     }

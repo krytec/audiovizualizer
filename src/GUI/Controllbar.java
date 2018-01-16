@@ -49,7 +49,7 @@ public class Controllbar {
     public void init(BorderPane pane){
         playlist= controller.getactPlaylist();
         play = new Button("\u23F5");
-        play.setPrefSize(35,10);
+        play.setPrefSize(50,10);
         play.setOnAction(e -> {
 
             if(!controller.isPlaying().get()) {
@@ -63,7 +63,7 @@ public class Controllbar {
 
         });
         stop = new Button("\u23F9");
-        stop.setPrefSize(35,10);
+        stop.setPrefSize(50,10);
         stop.setOnAction(e -> controller.stop());
         next = new Button ("\u23ED");
         next.setOnAction(e -> controller.skip());
@@ -95,7 +95,7 @@ public class Controllbar {
         repeat.setPrefSize(50,10);
 
         options= new Button("Filter");
-        options.setPrefSize(50,10);
+        options.setPrefSize(70,10);
 
 
         volume = new Slider();

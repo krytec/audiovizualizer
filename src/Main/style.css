@@ -1,3 +1,14 @@
+#optionBox{
+}
+
+#nameBox{
+
+}
+
+#buttonBox{
+
+}
+
 .slider .track {
     -fx-background-color:#757171;
     -fx-background-insets: 1 0 -1 0, 0, 1;
@@ -10,7 +21,7 @@
 
 .button{
 -fx-background-color:#212121;
--fx-text-fill:#000000;
+-fx-text-fill:#F2F2F2;
 -fx-button-background-radius: 30;
 -fx-border-color:#666666;
 
