@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 
 public class Options {
 
-    private SimpleBooleanProperty circleb,lineb,backgroundb,freqb;
+    private SimpleBooleanProperty circleb,lineb,backgroundb,freqb,spiralb;
     public Options(){
 
     }
@@ -31,10 +31,13 @@ public class Options {
 
         Label backgroundlabel = new Label("Background");
 
+        Label spirallabel = new Label("Spirale");
+
         SwitchButton circle = new SwitchButton();
         SwitchButton line = new SwitchButton();
         SwitchButton background = new SwitchButton();
         SwitchButton freq = new SwitchButton();
+        SwitchButton spiral = new SwitchButton();
 
         options.setAlignment(Pos.CENTER);
         options.setId("optionBox");
@@ -45,17 +48,20 @@ public class Options {
         lineb = line.switchedProperty();
         backgroundb = background.switchedProperty();
         freqb = freq.switchedProperty();
+        spiralb = spiral.switchedProperty();
 
-        buttons.getChildren().addAll(circle,line,freq,background);
-        names.getChildren().addAll(circlelabel,linelabel,freqlabel,backgroundlabel);
+        buttons.getChildren().addAll(circle,line,freq,background,spiral);
+        names.getChildren().addAll(circlelabel,linelabel,freqlabel,backgroundlabel,spirallabel);
         VBox.setMargin(circlelabel,new Insets(5));
         VBox.setMargin(linelabel,new Insets(5));
         VBox.setMargin(freqlabel,new Insets(5));
         VBox.setMargin(backgroundlabel,new Insets(5));
+        VBox.setMargin(spirallabel,new Insets(5));
         VBox.setMargin(circle,new Insets(0,5,10,5));
         VBox.setMargin(line,new Insets(5,5,10,5));
         VBox.setMargin(freq,new Insets(5,5,10,5));
         VBox.setMargin(background,new Insets(5,5,10,5));
+        VBox.setMargin(spiral,new Insets(5,5,10,5));
         content.getChildren().addAll(names,buttons);
         options.getChildren().addAll(content);
 
@@ -79,6 +85,8 @@ public class Options {
     public SimpleBooleanProperty linebProperty() {
         return lineb;
     }
+
+    public SimpleBooleanProperty spiralbProperty(){ return spiralb;}
 
 
 }

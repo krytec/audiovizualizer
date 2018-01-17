@@ -19,6 +19,8 @@ import Playlist.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import Filter.FilterMap;
+import sun.security.provider.ConfigFile;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,10 +37,11 @@ public class DrawFilter {
     private LineFilter lineFilter;
     private Freqfilter freqfilter;
     private BackgroundFilter backgroundFilter;
+    private SpiralFilter spiralFilter;
     private Songinformation songinformation;
     private boolean showing = false;
     private Pane pane;
-    private boolean drawcircle,drawfreq,drawline,drawbackground;
+    private boolean drawcircle,drawfreq,drawline,drawbackground,drawspiral;
 
     private Canvas canvas;
     public DrawFilter(Controller controller, OptionsController optionsController){
@@ -110,6 +113,7 @@ public class DrawFilter {
         lineFilter = new LineFilter(controller,gc);
         freqfilter = new Freqfilter(controller,gc);
         backgroundFilter = new BackgroundFilter(controller,gc);
+        spiralFilter = new SpiralFilter(controller,gc);
 
 
 
@@ -132,6 +136,8 @@ public class DrawFilter {
         optionsController.freq().addListener((a,b,c)-> drawfreq=c);
         optionsController.line().addListener((a,b,c)-> drawline=c);
         optionsController.backround().addListener((a,b,c)-> drawbackground=c);
+        optionsController.spiral().addListener((a,b,c)-> drawspiral=c);
+
       controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -153,6 +159,9 @@ public class DrawFilter {
                 }
                 if(drawline){
                     lineFilter.drawFilter();
+                }
+                if(drawspiral){
+
                 }
 
 

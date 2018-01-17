@@ -26,6 +26,7 @@ public class OptionsController {
     public SimpleBooleanProperty backround(){
         return options.backgroundbProperty();
     }
+    public SimpleBooleanProperty spiral(){ return options.spiralbProperty();}
 
     public VBox options(){
         return options.init();

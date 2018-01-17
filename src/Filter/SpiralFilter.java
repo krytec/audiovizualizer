@@ -5,21 +5,17 @@ import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class CircleFilter extends Filter{
-
+public class SpiralFilter extends Filter {
     private Controller controller;
     private GraphicsContext gc;
     private FFT fft;
-    private double oldx,oldy;
-
-
-    public CircleFilter(Controller controller, GraphicsContext gc){
-        this.gc = gc;
+    public SpiralFilter(Controller controller, GraphicsContext gc){
         this.controller=controller;
+        this.gc=gc;
     }
+    @Override
+    public void drawFilter() {
 
-
-    public void drawFilter(double[] oldX,double[] oldY){
         fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
         fft.forward(controller.getAudio().mix);
         double r;
@@ -87,50 +83,39 @@ public class CircleFilter extends Filter{
             value = Math.min(value+1,(float) gc.getCanvas().getHeight()/4);
             newBand[i]=value;
         }
+        int j=0;
+        int k=0;
 
-        /** Kreis!
-         *
-         */
-        for (int i = 0; i < points; i++) {
+        for(int i=0;i<points*2;i++){
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
-            r = map(newBand[i]>10?  newBand[i]-5: newBand[i],
-                    0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 2);
+            r = gc.getCanvas().getHeight()/6;
+            double x = midx + r * Math.cos(slice*i);
+            double y = midy + r * Math.sin(slice*i);
 
-                double x2 = Math.abs(midx - r * Math.cos(slice*i));
-                double y2 = Math.abs(midy - r * Math.sin(slice*i));
-                if(i==0){
-                    oldx=x2;
-                    oldy=y2;
-                }
-                if(i==points-1){
-                    x2=oldx;
-                    y2=oldy;
-                }
-                gc.strokeLine(oldX[0], oldY[0], x2, y2);
-                oldX[0] = x2;
-                oldY[0] = y2;
+            double buffer = newBand[i];
+            double newX = x + (buffer*i/5 * Math.cos(slice*i));
+            double newY = y + (buffer*i/5 * Math.sin(slice*i));
+            if(i>points){
+                buffer = newBand[j];
+                newX = newX + (buffer*j/5 * Math.cos(slice*i));
+                newY = newY + (buffer*j/5 * Math.sin(slice*i));
+                j++;
+            }
+            if(j>points){
+                buffer = newBand[k];
+                newX = newX + (buffer*k/5 * Math.cos(slice*i));
+                newY = newY + (buffer*k/5 * Math.sin(slice*i));
+                k++;
+            }
 
 
 
-
+            float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
+            gc.setFill(Color.hsb(rgb, 1, 1));
+            gc.fill();
+            gc.fillRect(newX, newY, (buffer > 5) ? buffer /5 : buffer, (buffer > 5) ? buffer /5 : buffer);
 
         }
-        int j = 0;
-        int k =0;
-
-    }
-
-
-    @Override
-    public void drawFilter() {
-
-    }
-
-    public double getOldx(){
-        return oldx;
-    }
-    public double getOldy(){
-        return oldy;
     }
 }
