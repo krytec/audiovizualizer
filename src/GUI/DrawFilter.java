@@ -138,9 +138,11 @@ public class DrawFilter {
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 if(drawcircle){
-                    circleFilter.drawFilter(oldX,oldY);
                     oldX[0]=circleFilter.getOldx();
                     oldY[0]=circleFilter.getOldy();
+                    circleFilter.drawFilter(oldX,oldY);
+                    System.out.println(oldX[0]+" "+oldY[0]);
+
                 }
 
                 if(drawfreq){
