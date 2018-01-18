@@ -268,17 +268,15 @@ public class MP3Player{
     private class TrackTask extends TimerTask{
         @Override
         public void run() {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
+
                     if(length.get() < (actPlaylist.getTrack(track).getLength())){
                         length.set(length.get()+1);
                     }
                     else{
                         skip();
                     }
-                }
-            });
+
+
 
         }
     }

@@ -1,32 +1,38 @@
 package Filter;
 
-import Main.Controller;
+import Mp3Player.Controller;
 import javafx.scene.canvas.GraphicsContext;
+
 
 import java.util.HashMap;
 
-public class FilterMap {
-    private GraphicsContext gc;
-    private Controller controller;
+public class FilterMap extends HashMap<String,Filter>{
 
+        private Controller controller;
+        private GraphicsContext gc;
     public FilterMap(Controller controller, GraphicsContext gc){
-        this.controller=controller;
+        super();
         this.gc=gc;
-    }
-
-    public HashMap<String,Filter> init(){
-        HashMap<String,Filter> filterMap = new HashMap<String,Filter>();
-        CircleFilter circleFilter = new CircleFilter(controller,gc);
-        LineFilter lineFilter = new LineFilter(controller,gc);
-        Freqfilter freqfilter = new Freqfilter(controller,gc);
-        BackgroundFilter backgroundFilter = new BackgroundFilter(controller,gc);
-        filterMap.put("Circle",circleFilter);
-        filterMap.put("Line",lineFilter);
-        filterMap.put("Frequencie",freqfilter);
-        filterMap.put("Background",backgroundFilter);
+        this.controller=controller;
+        init();
 
 
-        return filterMap;
 
     }
+
+    public void init(){
+        CircleFilter circleFilter = new CircleFilter("Circle",controller,gc);
+        LineFilter lineFilter = new LineFilter("Line",controller,gc);
+        Freqfilter freqfilter = new Freqfilter("Freq",controller,gc);
+        BackgroundFilter backgroundFilter = new BackgroundFilter("Background",controller,gc);
+        SpiralFilter spiralFilter = new SpiralFilter("Spiral",controller,gc);
+
+        put(circleFilter.toString(),circleFilter);
+        put(lineFilter.toString(),lineFilter);
+        put(freqfilter.toString(),freqfilter);
+        put(backgroundFilter.toString(),backgroundFilter);
+        put(spiralFilter.toString(),spiralFilter);
+    }
+
+
 }

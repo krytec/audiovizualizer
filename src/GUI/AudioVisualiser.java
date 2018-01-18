@@ -1,23 +1,17 @@
 package GUI;
 
-import Filter.Filter;
 import Filter.FilterMap;
-import Main.OptionsController;
 import Mp3Player.MP3Player;
 import Playlist.Playlist;
 import Playlist.PlaylistManager;
-import Main.Controller;
-import Main.Filtercontroller;
+import Mp3Player.Controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class AudioVisualiser {
     private Controller controller;
@@ -41,19 +35,16 @@ public class AudioVisualiser {
         player = new MP3Player();
         manager = new PlaylistManager();
         playlist = new Playlist("default");
-        playlist=manager.createTrack(playlist);
         controller = new Controller(player,manager,playlist);
-        options = new Options();
-        OptionsController optionsController = new OptionsController(options);
-        VBox option = optionsController.options();
-        draw = new DrawFilter(controller,optionsController);
-        draw.init(root);
+        playlist=manager.createTrack(playlist);
+        draw = new DrawFilter(controller);
+        root.setCenter(draw);
         filtercontroller = new Filtercontroller(draw);
         filterMap = new FilterMap(controller,filtercontroller.getGC());
-        HashMap<String,Filter> map = filterMap.init();
-        controllbar = new Controllbar(controller,map,filtercontroller,optionsController);
-        controllbar.init(root);
-        root.setRight(option);
+        options = new Options(filterMap,filtercontroller);
+        controllbar = new Controllbar(controller);
+        root.setBottom(controllbar);
+        root.setRight(options);
         root.getRight().setVisible(false);
 
 

@@ -1,9 +1,8 @@
 package GUI;
 
 import Filter.*;
-import Main.OptionsController;
-import Playlist.Playlist;
-import Main.Controller;
+import Mp3Player.Controller;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -18,47 +17,43 @@ import javafx.scene.paint.Color;
 import Playlist.*;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import Filter.FilterMap;
-import sun.security.provider.ConfigFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DrawFilter {
+public class DrawFilter extends Group{
 
     private Controller controller;
-    private OptionsController optionsController;
-    private Playlist playlist;
+    private List<Filter> filterlist = new ArrayList<Filter>();
     private Filter filter;
     private GraphicsContext gc;
-    private CircleFilter circleFilter;
-    private LineFilter lineFilter;
-    private Freqfilter freqfilter;
-    private BackgroundFilter backgroundFilter;
-    private SpiralFilter spiralFilter;
+
     private Songinformation songinformation;
     private boolean showing = false;
     private Pane pane;
-    private boolean drawcircle,drawfreq,drawline,drawbackground,drawspiral;
-
     private Canvas canvas;
-    public DrawFilter(Controller controller, OptionsController optionsController){
+    public DrawFilter(Controller controller){
         this.controller=controller;
-        this.optionsController=optionsController;
+        try {
+            init();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public void init(BorderPane box)throws IOException{
+    public void init()throws IOException{
 
-        Group root = new Group();
+
         pane = new Pane();
 
 
 
         songinformation = new Songinformation(controller);
-        playlist = controller.getactPlaylist();
-        canvas = new Canvas(box.getWidth(),box.getHeight()-150);
+        canvas = new Canvas(0,0);
         gc = canvas.getGraphicsContext2D();
         final double[] midx = {gc.getCanvas().getWidth() / 2};
         final double[] midy = {gc.getCanvas().getHeight() / 2};
@@ -109,61 +104,40 @@ public class DrawFilter {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-        circleFilter = new CircleFilter(controller,gc);
-        lineFilter = new LineFilter(controller,gc);
-        freqfilter = new Freqfilter(controller,gc);
-        backgroundFilter = new BackgroundFilter(controller,gc);
-        spiralFilter = new SpiralFilter(controller,gc);
 
-
-
-
-
-
-        VBox info = songinformation.init();
 
         circle.setOnMouseClicked(e -> {
             if(showing==false){
                 showing = true;
-                pane.getChildren().addAll(info);
+                pane.getChildren().addAll(songinformation);
             }else{
                 showing = false;
                 pane.getChildren().remove(1);
             }
 
         });
-        optionsController.circle().addListener((a,b,c)-> drawcircle=c);
-        optionsController.freq().addListener((a,b,c)-> drawfreq=c);
-        optionsController.line().addListener((a,b,c)-> drawline=c);
-        optionsController.backround().addListener((a,b,c)-> drawbackground=c);
-        optionsController.spiral().addListener((a,b,c)-> drawspiral=c);
+
 
       controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-                if(drawcircle){
-                    oldX[0]=circleFilter.getOldx();
-                    oldY[0]=circleFilter.getOldy();
-                    circleFilter.drawFilter(oldX,oldY);
-                    System.out.println(oldX[0]+" "+oldY[0]);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-                }
-
-                if(drawfreq){
-                    freqfilter.drawFilter();
-                }
-                if(drawbackground){
-                    backgroundFilter.drawFilter();
-                }
-                if(drawline){
-                    lineFilter.drawFilter();
-                }
-                if(drawspiral){
-
-                }
-
+                        filterlist.forEach(e-> {
+                            if(e instanceof  CircleFilter){
+                                oldX[0]=((CircleFilter) e).getOldx();
+                                oldY[0]=((CircleFilter) e).getOldy();
+                                ((CircleFilter) e).drawFilter(oldX,oldY);
+                            }else{
+                                e.drawFilter();
+                            }
+                        });
+                    }
+                });
 
             }
         });
@@ -171,25 +145,35 @@ public class DrawFilter {
         controller.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
-                try {
-                    Image image = SwingFXUtils.toFXImage(newValue.getImage(),null);
-                    circle.setFill(new ImagePattern(image));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
+                        try {
+                            Image image = SwingFXUtils.toFXImage(newValue.getImage(),null);
+                            circle.setFill(new ImagePattern(image));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         });
 
 
-        root.getChildren().addAll(canvas,pane);
+        getChildren().addAll(canvas,pane);
         pane.getChildren().addAll(circle);
-        box.setCenter(root);
+
     }
 
     public void setFilter(Filter filter){
-        this.filter=filter;
+        filterlist.add(filter);
+    }
+
+    public void removeFilter(Filter filter){
+        filterlist.remove(filter);
     }
 
     public GraphicsContext getGC(){
@@ -204,7 +188,7 @@ public class DrawFilter {
         canvas.setHeight(height);
     }
 
-    public Pane getPane(){return pane;}
+
 
 }
 

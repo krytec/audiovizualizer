@@ -1,6 +1,6 @@
 package Filter;
 
-import Main.Controller;
+import Mp3Player.Controller;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -13,7 +13,8 @@ public class CircleFilter extends Filter{
     private double oldx,oldy;
 
 
-    public CircleFilter(Controller controller, GraphicsContext gc){
+    public CircleFilter(String name,Controller controller, GraphicsContext gc){
+        super(name);
         this.gc = gc;
         this.controller=controller;
     }

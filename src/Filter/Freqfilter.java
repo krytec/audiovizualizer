@@ -1,6 +1,6 @@
 package Filter;
 
-import Main.Controller;
+import Mp3Player.Controller;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -12,7 +12,8 @@ public class Freqfilter extends Filter {
     private GraphicsContext gc;
     private double r;
 
-    public Freqfilter(Controller controller, GraphicsContext gc){
+    public Freqfilter(String name,Controller controller, GraphicsContext gc){
+        super(name);
         this.controller=controller;
         this.gc=gc;
     }

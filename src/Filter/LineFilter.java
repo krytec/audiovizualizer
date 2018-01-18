@@ -1,6 +1,6 @@
 package Filter;
 
-import Main.Controller;
+import Mp3Player.Controller;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -11,7 +11,8 @@ public class LineFilter extends Filter {
     private GraphicsContext gc;
     private FFT fft;
 
-    public LineFilter(Controller controller, GraphicsContext gc){
+    public LineFilter(String name,Controller controller, GraphicsContext gc){
+        super(name);
         this.controller=controller;
         this.gc=gc;
     }

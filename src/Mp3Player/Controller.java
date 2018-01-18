@@ -1,4 +1,4 @@
-package Main;
+package Mp3Player;
 
 
 import Mp3Player.MP3Player;

@@ -1,9 +1,8 @@
 package GUI;
 
 import Filter.Filter;
-import Main.Controller;
-import Main.Filtercontroller;
-import Main.OptionsController;
+import Mp3Player.Controller;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -19,34 +18,30 @@ import java.util.HashMap;
  * @author Florian Ortmann, Lea Haugrund
  * Controllbar für ein Layout
  */
-public class Controllbar {
+public class Controllbar extends VBox{
     private Playlist playlist;
     private Button play,shuffle,stop,next,previous,repeat,options;
     private Slider volume,tracklength;
     private VBox controllbar;
     private HBox PlayPauseStop,buttonsandslider;
     private Controller controller;
-    private ListView<String> filterview;
-    private HashMap<String,Filter> map;
-    private Filtercontroller filtercontroller;
-    private OptionsController optionsController;
 
     /**
      * Standard constructor für eine Controllbar
      * @param controller Controller der mit den GUI interagiert
      */
-    public Controllbar(Controller controller, HashMap<String,Filter> map, Filtercontroller filtercontroller,OptionsController optionsController){
+    public Controllbar(Controller controller){
         this.controller =controller;
-        this.map=map;
-        this.filtercontroller=filtercontroller;
-        this.optionsController=optionsController;
+        init();
+
+
     }
 
     /**
      * Initialisiert eine Controllbar
-     * @param pane das Layout auf dem die Controllbar ist
+     *
      */
-    public void init(BorderPane pane){
+    public void init(){
         playlist= controller.getactPlaylist();
         play = new Button("\u23F5");
         play.setPrefSize(50,10);
@@ -122,13 +117,25 @@ public class Controllbar {
         controller.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
-                tracklength.setMax(newValue.getLength());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        tracklength.setMax(newValue.getLength());
+                    }
+                });
+
             }
         });
         controller.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                tracklength.setValue(newValue.intValue());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        tracklength.setValue(newValue.intValue());
+                    }
+                });
+
             }
         });
 
@@ -142,19 +149,7 @@ public class Controllbar {
             }
         });
 
-        final Filter[] filter = new Filter[1];
-        filterview = new ListView<>();
-        ComboBox<String> filterComboBox = new ComboBox<String>();
 
-        map.forEach((k,f)-> filterComboBox.getItems().add(k));
-        filterComboBox.getSelectionModel().selectFirst();
-        filterComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                filter[0] = map.get(newValue);
-                filtercontroller.setFilter(filter[0]);
-            }
-        });
         PlayPauseStop = new HBox(5);
         PlayPauseStop.setAlignment(Pos.BASELINE_CENTER);
         PlayPauseStop.setPadding(new Insets(0,0,10,0));
@@ -167,11 +162,9 @@ public class Controllbar {
         HBox.setHgrow(PlayPauseStop,Priority.ALWAYS);
         HBox.setHgrow(volume,Priority.ALWAYS);
         buttonsandslider.setAlignment(Pos.CENTER);
+        getChildren().addAll(tracklength,buttonsandslider);
 
-        controllbar = new VBox(5);
-        controllbar.getChildren().addAll(tracklength,buttonsandslider);
 
-        pane.setBottom(controllbar);
 
     }
 

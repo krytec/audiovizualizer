@@ -1,6 +1,6 @@
 package Filter;
 
-import Main.Controller;
+import Mp3Player.Controller;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,7 +12,8 @@ public class BackgroundFilter extends Filter {
     private FFT fft;
     private BeatDetect beatDetect;
 
-    public BackgroundFilter(Controller controller,GraphicsContext gc){
+    public BackgroundFilter(String name,Controller controller,GraphicsContext gc){
+        super(name);
         this.controller=controller;
         this.gc=gc;
     }

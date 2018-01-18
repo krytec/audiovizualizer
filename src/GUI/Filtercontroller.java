@@ -1,9 +1,8 @@
-package Main;
+package GUI;
 
 import GUI.DrawFilter;
 import Filter.Filter;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
 
 public class Filtercontroller {
     DrawFilter drawFilter;
@@ -14,6 +13,10 @@ public class Filtercontroller {
 
     public void setFilter(Filter filter){
         drawFilter.setFilter(filter);
+    }
+
+    public void removeFilter(Filter filter){
+        drawFilter.removeFilter(filter);
     }
 
     public GraphicsContext getGC(){
@@ -28,7 +31,4 @@ public class Filtercontroller {
         drawFilter.setWidth(width);
     }
 
-    public Pane getPane(){
-        return drawFilter.getPane();
-    }
 }
