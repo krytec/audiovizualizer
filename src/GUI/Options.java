@@ -33,7 +33,7 @@ public class Options extends ListView<Filter>{
        });
 
        setPrefSize(150,150);
-       
+
     }
 
 
