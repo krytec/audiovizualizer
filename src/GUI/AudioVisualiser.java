@@ -13,7 +13,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.*;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -35,9 +37,8 @@ public class AudioVisualiser {
     }
 
     public Scene init() throws IOException {
-
-        HBox root = new HBox();
-        VBox main = new VBox();
+        HBox main = new HBox();
+        VBox root = new VBox();
         player = new MP3Player();
         manager = new PlaylistManager();
         playlist = new Playlist("default");
@@ -48,8 +49,9 @@ public class AudioVisualiser {
         filterMap = new FilterMap(playerFassade,filtercontroller.getGC());
         options = new Options(filterMap,filtercontroller);
         controllbar = new Controllbar(playerFassade);
-        main.getChildren().addAll(draw,controllbar);
-        root.getChildren().add(main);
+        main.getChildren().addAll(draw);
+
+        root.getChildren().addAll(main,controllbar);
 
 
 
@@ -88,11 +90,11 @@ public class AudioVisualiser {
                 fadeTransition.setFromValue(1.0);
                 fadeTransition.setToValue(0.0);
                 fadeTransition.play();
-                root.getChildren().remove(options);
+                main.getChildren().remove(options);
                 showoption.set(false);
             }else {
-                root.getChildren().add(1,options);
-                HBox.setMargin(options,new Insets(5));
+                main.getChildren().add(1,options);
+                HBox.setMargin(options,new Insets(0,5,0,0));
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),options);
                 fadeTransition.setFromValue(0.0);
                 fadeTransition.setToValue(1.0);
