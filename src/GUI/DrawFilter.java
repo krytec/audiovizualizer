@@ -1,7 +1,7 @@
 package GUI;
 
 import Filter.*;
-import Mp3Player.Controller;
+import Mp3Player.PlayerFassade;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,9 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import Playlist.*;
 import javafx.scene.paint.ImagePattern;
@@ -27,7 +25,7 @@ import java.util.List;
 
 public class DrawFilter extends Group{
 
-    private Controller controller;
+    private PlayerFassade playerFassade;
     private List<Filter> filterlist = new ArrayList<Filter>();
     private Filter filter;
     private GraphicsContext gc;
@@ -36,8 +34,8 @@ public class DrawFilter extends Group{
     private boolean showing = false;
     private Pane pane;
     private Canvas canvas;
-    public DrawFilter(Controller controller){
-        this.controller=controller;
+    public DrawFilter(PlayerFassade playerFassade){
+        this.playerFassade = playerFassade;
         try {
             init();
         }catch (Exception e){
@@ -52,7 +50,7 @@ public class DrawFilter extends Group{
 
 
 
-        songinformation = new Songinformation(controller);
+        songinformation = new Songinformation(playerFassade);
         canvas = new Canvas(0,0);
         gc = canvas.getGraphicsContext2D();
         final double[] midx = {gc.getCanvas().getWidth() / 2};
@@ -75,7 +73,7 @@ public class DrawFilter extends Group{
                midy[0] =canvas.getHeight()/2;
                oldX[0]=midx[0];
                oldY[0]=midy[0];
-                if(controller.isPause()) {
+                if(playerFassade.isPause()) {
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 }
@@ -92,7 +90,7 @@ public class DrawFilter extends Group{
                 midy[0] =canvas.getHeight()/2;
                 oldX[0]=midx[0];
                 oldY[0]=midy[0];
-                if(controller.isPause()) {
+                if(playerFassade.isPause()) {
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
                 }
@@ -118,7 +116,7 @@ public class DrawFilter extends Group{
         });
 
 
-      controller.integerProperty().addListener(new ChangeListener<Number>() {
+      playerFassade.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Platform.runLater(new Runnable() {
@@ -142,7 +140,7 @@ public class DrawFilter extends Group{
             }
         });
 
-        controller.trackProperty().addListener(new ChangeListener<Track>() {
+        playerFassade.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
                 Platform.runLater(new Runnable() {

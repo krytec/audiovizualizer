@@ -15,9 +15,9 @@ import java.util.List;
 
 /**
  * @author Florian Ortmann, Lea Haugrund
- * Controller class um den Player anzusteuern
+ * PlayerFassade class um den Player anzusteuern
  */
-public class Controller {
+public class PlayerFassade {
 
     private MP3Player player;
     private PlaylistManager manager;
@@ -31,7 +31,7 @@ public class Controller {
      * @param manager PlaylistManager
      * @param playlist aktuelle Playlist
      */
-    public Controller(MP3Player player,PlaylistManager manager,Playlist playlist){
+    public PlayerFassade(MP3Player player, PlaylistManager manager, Playlist playlist){
         this.player=player;
         this.manager =manager;
         this.playlist=playlist;

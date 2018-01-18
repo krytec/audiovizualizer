@@ -1,7 +1,6 @@
 package GUI;
 
-import Filter.Filter;
-import Mp3Player.Controller;
+import Mp3Player.PlayerFassade;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,8 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import Playlist.*;
-
-import java.util.HashMap;
 
 
 /**
@@ -22,16 +19,15 @@ public class Controllbar extends VBox{
     private Playlist playlist;
     private Button play,shuffle,stop,next,previous,repeat,options;
     private Slider volume,tracklength;
-    private VBox controllbar;
     private HBox PlayPauseStop,buttonsandslider;
-    private Controller controller;
+    private PlayerFassade playerFassade;
 
     /**
      * Standard constructor für eine Controllbar
-     * @param controller Controller der mit den GUI interagiert
+     * @param playerFassade PlayerFassade der mit den GUI interagiert
      */
-    public Controllbar(Controller controller){
-        this.controller =controller;
+    public Controllbar(PlayerFassade playerFassade){
+        this.playerFassade = playerFassade;
         init();
 
 
@@ -42,49 +38,49 @@ public class Controllbar extends VBox{
      *
      */
     public void init(){
-        playlist= controller.getactPlaylist();
+        playlist= playerFassade.getactPlaylist();
         play = new Button("\u23F5");
         play.setPrefSize(50,10);
         play.setOnAction(e -> {
 
-            if(!controller.isPlaying().get()) {
-                controller.play(playlist);
+            if(!playerFassade.isPlaying().get()) {
+                playerFassade.play(playlist);
 
             }
             else{
-                controller.pause();
+                playerFassade.pause();
 
             }
 
         });
         stop = new Button("\u23F9");
         stop.setPrefSize(50,10);
-        stop.setOnAction(e -> controller.stop());
+        stop.setOnAction(e -> playerFassade.stop());
         next = new Button ("\u23ED");
-        next.setOnAction(e -> controller.skip());
+        next.setOnAction(e -> playerFassade.skip());
         next.setPrefSize(50,10);
         previous = new Button("\u23EE");
-        previous.setOnAction(e -> controller.skipBack());
+        previous.setOnAction(e -> playerFassade.skipBack());
         previous.setPrefSize(50,10);
         shuffle = new Button("\uD83D\uDD00");
         shuffle.setOnAction(e -> {
-            if(controller.isShuffle()){
-                controller.shuffle(false);
+            if(playerFassade.isShuffle()){
+                playerFassade.shuffle(false);
                 shuffle.setTooltip(new Tooltip("aus"));
 
             }
             else{
-                controller.shuffle(true);
+                playerFassade.shuffle(true);
                 shuffle.setTooltip(new Tooltip("an"));
             }
         });
         shuffle.setPrefSize(50,10);
         repeat = new Button("\u21BA");
         repeat.setOnAction(e -> {
-            if(controller.isRepeat()){
-            controller.repeat(false);}
+            if(playerFassade.isRepeat()){
+            playerFassade.repeat(false);}
             else{
-                controller.repeat(true);
+                playerFassade.repeat(true);
             }
         });
         repeat.setPrefSize(50,10);
@@ -102,8 +98,8 @@ public class Controllbar extends VBox{
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 float volume;
                 volume = newValue.floatValue()/100;
-                if(controller.isPlaying().getValue()) {
-                    controller.volume(volume);
+                if(playerFassade.isPlaying().getValue()) {
+                    playerFassade.volume(volume);
                 }
 
             }
@@ -114,7 +110,7 @@ public class Controllbar extends VBox{
         tracklength.setMax(5);
 
 
-        controller.trackProperty().addListener(new ChangeListener<Track>() {
+        playerFassade.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
                 Platform.runLater(new Runnable() {
@@ -126,7 +122,7 @@ public class Controllbar extends VBox{
 
             }
         });
-        controller.integerProperty().addListener(new ChangeListener<Number>() {
+        playerFassade.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Platform.runLater(new Runnable() {
@@ -139,7 +135,7 @@ public class Controllbar extends VBox{
             }
         });
 
-        controller.isPlaying().addListener(new ChangeListener<Boolean>() {
+        playerFassade.isPlaying().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(newValue.booleanValue()){
                     play.setText("\u23F8");
@@ -163,6 +159,7 @@ public class Controllbar extends VBox{
         HBox.setHgrow(volume,Priority.ALWAYS);
         buttonsandslider.setAlignment(Pos.CENTER);
         getChildren().addAll(tracklength,buttonsandslider);
+        VBox.setMargin(this,new Insets(10));
 
 
 

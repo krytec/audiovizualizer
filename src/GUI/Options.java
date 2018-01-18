@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 
-public class Options extends ListView<Filter> {
+public class Options extends ListView<Filter>{
 
     private FilterMap filterMap;
     private Filtercontroller filtercontroller;
@@ -31,6 +31,8 @@ public class Options extends ListView<Filter> {
                return new FilterCell();
            }
        });
+
+       setPrefSize(150,50);
     }
 
 

@@ -1,28 +1,28 @@
 package Filter;
 
-import Mp3Player.Controller;
+import Mp3Player.PlayerFassade;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class CircleFilter extends Filter{
 
-    private Controller controller;
+    private PlayerFassade playerFassade;
     private GraphicsContext gc;
     private FFT fft;
     private double oldx,oldy;
 
 
-    public CircleFilter(String name,Controller controller, GraphicsContext gc){
+    public CircleFilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
         this.gc = gc;
-        this.controller=controller;
+        this.playerFassade = playerFassade;
     }
 
 
     public void drawFilter(double[] oldX,double[] oldY){
-        fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
-        fft.forward(controller.getAudio().mix);
+        fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
+        fft.forward(playerFassade.getAudio().mix);
         double r;
         double points = (fft.specSize()/2)-1;
         double slice = 2 * Math.PI / points;

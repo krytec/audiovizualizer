@@ -1,27 +1,27 @@
 package Filter;
 
-import Mp3Player.Controller;
+import Mp3Player.PlayerFassade;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Freqfilter extends Filter {
 
-    private Controller controller;
+    private PlayerFassade playerFassade;
     private FFT fft;
     private GraphicsContext gc;
     private double r;
 
-    public Freqfilter(String name,Controller controller, GraphicsContext gc){
+    public Freqfilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
-        this.controller=controller;
+        this.playerFassade = playerFassade;
         this.gc=gc;
     }
 
     @Override
     public void drawFilter() {
-        fft = new FFT(controller.getAudio().bufferSize(), controller.getAudio().sampleRate());
-        fft.forward(controller.getAudio().mix);
+        fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
+        fft.forward(playerFassade.getAudio().mix);
         double points = fft.specSize();
 
         double slice = 2*Math.PI/points;

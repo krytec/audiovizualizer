@@ -2,19 +2,24 @@ package GUI;
 
 import Filter.FilterMap;
 import Mp3Player.MP3Player;
+import Mp3Player.PlayerFassade;
 import Playlist.Playlist;
 import Playlist.PlaylistManager;
-import Mp3Player.Controller;
+import com.sun.javafx.font.freetype.HBGlyphLayout;
+import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
 public class AudioVisualiser {
-    private Controller controller;
+    private PlayerFassade playerFassade;
     private Filtercontroller filtercontroller;
     private PlaylistManager manager;
     private MP3Player player;
@@ -31,21 +36,21 @@ public class AudioVisualiser {
 
     public Scene init() throws IOException {
 
-        BorderPane root = new BorderPane();
+        HBox root = new HBox();
+        VBox main = new VBox();
         player = new MP3Player();
         manager = new PlaylistManager();
         playlist = new Playlist("default");
-        controller = new Controller(player,manager,playlist);
+        playerFassade = new PlayerFassade(player,manager,playlist);
         playlist=manager.createTrack(playlist);
-        draw = new DrawFilter(controller);
-        root.setCenter(draw);
+        draw = new DrawFilter(playerFassade);
         filtercontroller = new Filtercontroller(draw);
-        filterMap = new FilterMap(controller,filtercontroller.getGC());
+        filterMap = new FilterMap(playerFassade,filtercontroller.getGC());
         options = new Options(filterMap,filtercontroller);
-        controllbar = new Controllbar(controller);
-        root.setBottom(controllbar);
-        root.setRight(options);
-        root.getRight().setVisible(false);
+        controllbar = new Controllbar(playerFassade);
+        main.getChildren().addAll(draw,controllbar);
+        root.getChildren().add(main);
+
 
 
         root.setPrefSize(800,600);
@@ -57,6 +62,10 @@ public class AudioVisualiser {
                 }else {
                     filtercontroller.setWidth(newValue.doubleValue());
                 }
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),draw);
+                fadeTransition.setFromValue(0.5);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
 
             }
         });
@@ -64,6 +73,10 @@ public class AudioVisualiser {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 filtercontroller.setHeight(newValue.doubleValue()-150);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),draw);
+                fadeTransition.setFromValue(0.5);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
 
             }
         });
@@ -71,10 +84,19 @@ public class AudioVisualiser {
         Scene scene = new Scene(root,800,600);
         controllbar.getOptions().setOnAction(e-> {
             if(showoption.getValue()){
-                root.getRight().setVisible(false);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),options);
+                fadeTransition.setFromValue(1.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.play();
+                root.getChildren().remove(options);
                 showoption.set(false);
             }else {
-                root.getRight().setVisible(true);
+                root.getChildren().add(1,options);
+                HBox.setMargin(options,new Insets(5));
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),options);
+                fadeTransition.setFromValue(0.0);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
                 showoption.set(true);
             }
 
@@ -83,9 +105,17 @@ public class AudioVisualiser {
         showoption.addListener((a,b,c)-> {
             if(c){
                 filtercontroller.setWidth(root.getWidth()-150);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),draw);
+                fadeTransition.setFromValue(0.5);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
             }
             else{
                 filtercontroller.setWidth(root.getWidth());
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),draw);
+                fadeTransition.setFromValue(0.5);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.play();
             }
         });
        return scene;

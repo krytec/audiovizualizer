@@ -1,7 +1,7 @@
 package GUI;
 
+import Mp3Player.PlayerFassade;
 import Playlist.Track;
-import Mp3Player.Controller;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,11 +11,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class Songinformation extends VBox{
-    private Controller controller;
+    private PlayerFassade playerFassade;
     private Label titel, album, interpret, laenge;
     private VBox info;
-    public Songinformation(Controller controller){
-        this.controller = controller;
+    public Songinformation(PlayerFassade playerFassade){
+        this.playerFassade = playerFassade;
         init();
     }
 
@@ -29,7 +29,7 @@ public class Songinformation extends VBox{
         interpret = new Label("interpret");
         laenge = new Label("laenge");
 
-        controller.trackProperty().addListener(new ChangeListener<Track>() {
+        playerFassade.trackProperty().addListener(new ChangeListener<Track>() {
             @Override
             public void changed(ObservableValue<? extends Track> observable, Track oldValue, Track newValue) {
                 Platform.runLater(new Runnable() {
