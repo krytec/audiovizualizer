@@ -5,6 +5,7 @@ import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class BackgroundFilter extends Filter {
     private PlayerFassade playerFassade;
@@ -29,31 +30,15 @@ public class BackgroundFilter extends Filter {
         double buffer =0;
         double lowspec,midspec,highspec;
         for (int i = 0;i<fft.specSize();i++){
-            float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
+           /** float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
             gc.setStroke(Color.hsb(rgb, 1, 1, 1));
-            gc.stroke();
+            gc.stroke(); **/
             buffer += fft.getBand(i);
-
-
         }
         lowspec=buffer*0.2;
         midspec=buffer*0.5;
         highspec=buffer*0.7;
-        if(beatDetect.isKick()){
-            gc.setFill(Color.WHITE);
-            gc.fill();
-            gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
-        }
-        if(beatDetect.isSnare()){
-            gc.setFill(Color.WHITE);
-            gc.fill();
-            gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
-        }
-        if(beatDetect.isHat()){
-            gc.setFill(Color.WHITE);
-            gc.fill();
-            gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
-        }
+
         //top right
         gc.strokeRect(midx-lowspec,midy,lowspec,lowspec);
         gc.strokeRect(midx-midspec,midy,midspec,midspec);

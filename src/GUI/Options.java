@@ -83,9 +83,7 @@ public class Options extends ListView<Filter>{
 
         }
 
-        public SwitchButton getFilterbtn() {
-            return filterbtn;
-        }
+
     }
 
 

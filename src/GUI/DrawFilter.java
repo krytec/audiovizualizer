@@ -27,13 +27,14 @@ public class DrawFilter extends Group{
 
     private PlayerFassade playerFassade;
     private List<Filter> filterlist = new ArrayList<Filter>();
-    private Filter filter;
     private GraphicsContext gc;
 
     private Songinformation songinformation;
     private boolean showing = false;
     private Pane pane;
     private Canvas canvas;
+    private BufferedImage img;
+
     public DrawFilter(PlayerFassade playerFassade){
         this.playerFassade = playerFassade;
         try {
@@ -58,7 +59,7 @@ public class DrawFilter extends Group{
         final double[] oldX = {midx[0], midx[0], midx[0], midx[0]};
         final double[] oldY = {midy[0], midy[0], midy[0], midy[0]};
         Circle circle = new Circle(midx[0], midy[0],gc.getCanvas().getHeight()/4);
-        BufferedImage img = ImageIO.read(new File("default.png"));
+        img = ImageIO.read(new File("default.png"));
         Image im1 = SwingFXUtils.toFXImage(img,null);
         circle.setFill(new ImagePattern(im1));
 
@@ -122,10 +123,17 @@ public class DrawFilter extends Group{
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        gc.setFill(Color.BLACK);
+                        gc.setFill(averageBackGroundColor(img));
                         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                        gc.setStroke(complementaryColor(img));
+                        gc.setFill(complementaryColor(img));
+
 
                         filterlist.forEach(e-> {
+                            if(e instanceof ColorFilter){
+                               e.drawFilter();
+                               e = filterlist.get(0);
+                            }
                             if(e instanceof  CircleFilter){
                                 oldX[0]=((CircleFilter) e).getOldx();
                                 oldY[0]=((CircleFilter) e).getOldy();
@@ -134,6 +142,7 @@ public class DrawFilter extends Group{
                                 e.drawFilter();
                             }
                         });
+                         
                     }
                 });
 
@@ -146,7 +155,13 @@ public class DrawFilter extends Group{
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        gc.setFill(Color.BLACK);
+                        try {
+                            img = newValue.getImage();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        gc.setFill(averageBackGroundColor(img));
+
                         gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
                         try {
                             Image image = SwingFXUtils.toFXImage(newValue.getImage(),null);
@@ -186,7 +201,45 @@ public class DrawFilter extends Group{
         canvas.setHeight(height);
     }
 
+    private Color averageBackGroundColor(BufferedImage img){
+        int x = img.getWidth();
+        int y = img.getHeight();
 
+        long r=0,g=0,b = 0;
+        for(int i=0;i<x;i++){
+            for (int j=0;j<y;j++){
+                java.awt.Color pixel = new java.awt.Color(img.getRGB(i,j));
+                r += pixel.getRed();
+                g += pixel.getGreen();
+                b += pixel.getBlue();
+
+            }
+        }
+
+        double a = x*y;
+        return Color.rgb((int) (r/a),(int) (g/a),(int) (b/a));
+
+
+    }
+    private Color complementaryColor(BufferedImage img){
+        int x = img.getWidth();
+        int y = img.getHeight();
+
+        long r=0,g=0,b = 0;
+        for(int i=0;i<x;i++){
+            for (int j=0;j<y;j++){
+                java.awt.Color pixel = new java.awt.Color(img.getRGB(i,j));
+                r += pixel.getRed();
+                g += pixel.getGreen();
+                b += pixel.getBlue();
+
+            }
+        }
+
+        double a = x*y;
+        return Color.rgb(255-(int) (r/a),255-(int) (g/a),255-(int) (b/a));
+
+    }
 
 }
 

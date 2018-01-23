@@ -43,8 +43,6 @@ public class Freqfilter extends Filter {
             double y = midy + r * Math.sin(angle);
             double newX = x + (buffer/5 * Math.cos(angle));
             double newY = y + (buffer/5 * Math.sin(angle));
-            float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
-            gc.setFill(Color.hsb(rgb, 1, 1));
             gc.fill();
             gc.fillRect(newX, newY, (buffer > 5) ? buffer /5 : buffer, (buffer > 5) ? buffer /5 : buffer);
 
