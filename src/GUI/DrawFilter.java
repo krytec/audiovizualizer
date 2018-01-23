@@ -34,6 +34,8 @@ public class DrawFilter extends Group{
     private Pane pane;
     private Canvas canvas;
     private BufferedImage img;
+    private Color background;
+    private Color notbackground;
 
     public DrawFilter(PlayerFassade playerFassade){
         this.playerFassade = playerFassade;
@@ -116,33 +118,36 @@ public class DrawFilter extends Group{
 
         });
 
-
       playerFassade.integerProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        gc.setFill(averageBackGroundColor(img));
+                        gc.setFill(background);
                         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-                        gc.setStroke(complementaryColor(img));
-                        gc.setFill(complementaryColor(img));
-
+                        gc.setStroke(notbackground);
+                        gc.setFill(notbackground);
 
                         filterlist.forEach(e-> {
-                            if(e instanceof ColorFilter){
-                               e.drawFilter();
-                               e = filterlist.get(0);
-                            }
-                            if(e instanceof  CircleFilter){
-                                oldX[0]=((CircleFilter) e).getOldx();
-                                oldY[0]=((CircleFilter) e).getOldy();
-                                ((CircleFilter) e).drawFilter(oldX,oldY);
-                            }else{
+
+
+                                if(e instanceof  ColorFilter && filterlist.size()<3){
                                 e.drawFilter();
-                            }
+                                e = filterlist.get(0);
+                                }
+                                if (e instanceof CircleFilter) {
+                                    oldX[0] = ((CircleFilter) e).getOldx();
+                                    oldY[0] = ((CircleFilter) e).getOldy();
+                                    ((CircleFilter) e).drawFilter(oldX, oldY);
+                                } else {
+
+                                        e.drawFilter();
+
+                                }
+
                         });
-                         
+
                     }
                 });
 
@@ -157,10 +162,12 @@ public class DrawFilter extends Group{
                     public void run() {
                         try {
                             img = newValue.getImage();
+                            background = averageBackGroundColor(img);
+                            notbackground = complementaryColor(img);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        gc.setFill(averageBackGroundColor(img));
+                        gc.setFill(background);
 
                         gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
                         try {

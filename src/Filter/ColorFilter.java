@@ -29,8 +29,8 @@ public class ColorFilter extends Filter {
 
         for (int i = 0;i<fft.specSize();i++){
              rgb.set( map(fft.getFreq(i), 0, 256, 0, 360) * 2);
-             gc.setStroke(Color.hsb(rgb.get(), 1, 1, 1));
-             gc.setFill(Color.hsb(rgb.get(),1,1,1));
+            gc.setFill(Color.hsb(rgb.get(),1,1,1));
+            gc.setStroke(Color.hsb(rgb.get(),1,1,1));
         }
     }
 
