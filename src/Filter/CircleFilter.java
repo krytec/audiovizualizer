@@ -22,14 +22,16 @@ public class CircleFilter extends Filter{
 
     public void drawFilter(double[] oldX,double[] oldY){
         fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
+        fft.window(FFT.LANCZOS);
         fft.forward(playerFassade.getAudio().mix);
         double r;
-        double points = (fft.specSize()/2)-1;
+        double points = (fft.specSize()/2);
         double slice = 2 * Math.PI / points;
 
         float[] band = new float[fft.specSize()];
         for(int i = 0;i< fft.specSize();i++){
-            band[i]=fft.getBand(i);
+
+            band[i]=(float) Math.abs((10*Math.log(2*fft.getBand(i))));
 
         }
 
@@ -88,7 +90,8 @@ public class CircleFilter extends Filter{
         for (int i = 0; i < points; i++) {
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
-            r = map(newBand[i]>10?  newBand[i]-5: newBand[i],
+
+            r = map(newBand[i],
                     0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 2);
 
                 double x2 = Math.abs(midx - r * Math.cos(slice*i));
@@ -110,8 +113,7 @@ public class CircleFilter extends Filter{
 
 
         }
-        int j = 0;
-        int k =0;
+
 
     }
 

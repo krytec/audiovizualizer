@@ -111,10 +111,6 @@ public class SpiralFilter extends Filter {
             }
 
 
-
-            float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
-            gc.setFill(Color.hsb(rgb, 1, 1));
-            gc.fill();
             gc.fillRect(newX, newY, (buffer > 5) ? buffer /5 : buffer, (buffer > 5) ? buffer /5 : buffer);
 
         }

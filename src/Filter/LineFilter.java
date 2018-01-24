@@ -19,6 +19,7 @@ public class LineFilter extends Filter {
 
     public void drawFilter(){
         fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
+        fft.window(FFT.LANCZOS);
         fft.forward(playerFassade.getAudio().mix);
         double points = fft.specSize();
         double width = gc.getCanvas().getWidth()/2;
@@ -28,77 +29,19 @@ public class LineFilter extends Filter {
         double x = gc.getCanvas().getWidth()/8;
         double y = gc.getCanvas().getHeight()/2-gc.getCanvas().getHeight()/10;
         float spread = map(200, 0,  width<points? (float)width:(float)points, 1, (float) x/8);
-        float[] band = new float[fft.specSize()];
-
-        for(int i = 0;i< fft.specSize();i++){
-            band[i]=fft.getBand(i);
-
-        }
-
-        for(int i = 0;i<fft.specSize();i++){
-            float value = 0;
-            if(i==0){
-                value = band[i];
-            }
-            else if(i==fft.specSize()-1){
-                value= (band[i-1]+band[i])/2;
-            }
-            else{
-                float prev = band[i-1];
-                float cur = band[i];
-                float next = band[i+1];
-
-                if(prev<=cur && cur >= next){
-                    value=cur;
-                }else{
-                    value=(cur+ Math.max(next,prev))/2;
-
-                }
-            }
-            value = Math.min(value+1,(float) gc.getCanvas().getHeight()/4);
-            band[i]=value;
-        }
-
-        float[] newBand = new float[band.length];
-
-        for(int i =0;i<newBand.length;i++){
-            float value = 0;
-            if(i==0){
-                value = band[i];
-            }
-            else if(i==fft.specSize()-1){
-                value= (band[i-1]+band[i])/2;
-            }
-            else{
-                float prev = band[i-1];
-                float cur = band[i];
-                float next = band[i+1];
-
-                if(prev<=cur && cur >= next){
-                    value=cur;
-                }else{
-                    value=(cur/2) + Math.max(next,prev)/3 + Math.min(next,prev)/6;
-
-                }
-            }
-            value = Math.min(value+1,(float) gc.getCanvas().getHeight()/4);
-            newBand[i]=value;
-        }
 
 
 
-        for (int i = 0; i < width; i+=spread) {
+
+        for (int i = 0; i < points; i+=spread) {
 
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
+                    double buffer = Math.log( 2 * fft.getBand(i)/fft.timeSize() );
+                    buffer=map((float) buffer,0,-150,0,(float) gc.getCanvas().getHeight());
 
+                    gc.strokeLine(i+midx-x,midy+y,i+midx-x,midy+y-Math.abs(buffer));
 
-                if(i < newBand.length-1) {
-                    double buffer = Math.abs(newBand[i]);
-
-                    gc.strokeOval(i + midx - x, midy + y - (buffer / 2), 7, buffer);
-                    gc.fillOval(i + midx - x, midy + y - (buffer / 2), 7, buffer);
-                }
 
 
         }
