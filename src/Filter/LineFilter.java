@@ -95,13 +95,8 @@ public class LineFilter extends Filter {
 
                 if(i < newBand.length-1) {
                     double buffer = Math.abs(newBand[i]);
-                    float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
 
-                    gc.setStroke(Color.hsb(rgb, 1, 1, 1));
-                    gc.stroke();
                     gc.strokeOval(i + midx - x, midy + y - (buffer / 2), 7, buffer);
-                    gc.setFill(Color.hsb(rgb, 1, 1));
-                    gc.fill();
                     gc.fillOval(i + midx - x, midy + y - (buffer / 2), 7, buffer);
                 }
 

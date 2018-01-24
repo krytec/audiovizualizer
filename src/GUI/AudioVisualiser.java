@@ -56,6 +56,7 @@ public class AudioVisualiser {
 
 
         root.setPrefSize(800,600);
+        root.setMinWidth(100);
         root.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {

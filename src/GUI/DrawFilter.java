@@ -55,6 +55,7 @@ public class DrawFilter extends Group{
 
         songinformation = new Songinformation(playerFassade);
         canvas = new Canvas(0,0);
+        canvas.minWidth(100);
         gc = canvas.getGraphicsContext2D();
         final double[] midx = {gc.getCanvas().getWidth() / 2};
         final double[] midy = {gc.getCanvas().getHeight() / 2};
@@ -129,12 +130,19 @@ public class DrawFilter extends Group{
                         gc.setStroke(notbackground);
                         gc.setFill(notbackground);
 
+                        for(int i=0;i<filterlist.size();i++){
+
+                            if(filterlist.get(i) instanceof ColorFilter){
+                                filterlist.get(i).drawFilter();
+                            }
+                        }
+
+
                         filterlist.forEach(e-> {
 
 
-                                if(e instanceof  ColorFilter && filterlist.size()<3){
-                                e.drawFilter();
-                                e = filterlist.get(0);
+                                if(e instanceof  ColorFilter){
+
                                 }
                                 if (e instanceof CircleFilter) {
                                     oldX[0] = ((CircleFilter) e).getOldx();
