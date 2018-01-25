@@ -23,7 +23,7 @@ public class LineFilter extends Filter {
         fft.forward(playerFassade.getAudio().mix);
         double points = fft.specSize();
         double width = gc.getCanvas().getWidth()/2;
-
+        points = points> width? width-10:points;
         width = width>81.5?width:81.5;
 
         double x = gc.getCanvas().getWidth()/8;

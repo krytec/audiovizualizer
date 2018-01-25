@@ -30,14 +30,11 @@ public class BackgroundFilter extends Filter {
         double buffer =0;
         double lowspec,midspec,highspec;
         for (int i = 0;i<fft.specSize();i++){
-           /** float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
-            gc.setStroke(Color.hsb(rgb, 1, 1, 1));
-            gc.stroke(); **/
-            buffer += fft.getBand(i);
+            buffer += fft.getFreq(i);
         }
-        lowspec=buffer*0.2;
-        midspec=buffer*0.5;
-        highspec=buffer*0.7;
+        lowspec=buffer*0.01;
+        midspec=buffer*0.02;
+        highspec=buffer*0.03;
 
         //top right
         gc.strokeRect(midx-lowspec,midy,lowspec,lowspec);

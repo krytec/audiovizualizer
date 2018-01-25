@@ -31,7 +31,7 @@ public class CircleFilter extends Filter{
         float[] band = new float[fft.specSize()];
         for(int i = 0;i< fft.specSize();i++){
 
-            band[i]=(float) Math.abs((10*Math.log(2*fft.getBand(i))));
+            band[i]=fft.getBand(i);
 
         }
 
@@ -90,6 +90,8 @@ public class CircleFilter extends Filter{
         for (int i = 0; i < points; i++) {
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
+
+
 
             r = map(newBand[i],
                     0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 2);
