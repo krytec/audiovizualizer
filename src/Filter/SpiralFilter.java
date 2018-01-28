@@ -24,11 +24,7 @@ public class SpiralFilter extends Filter {
         double slice = 2 * Math.PI / points;
 
         float spread = map(450, 0, (float) points, 1, 21.5f);
-        for (int i = 0; i < points; i += spread) {
-            float rgb = map(fft.getFreq(i), 0, 256, 0, 360) * 2;
-            gc.setStroke(Color.hsb(rgb, 1, 1, 1));
-            gc.stroke();
-        }
+        
 
         float[] band = new float[fft.specSize()];
         for(int i = 0;i< fft.specSize();i++){
