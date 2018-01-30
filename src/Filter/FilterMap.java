@@ -6,6 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashMap;
 
+/**
+ * @author Florian Ortmann ,Lea Haugrund
+ * FilterMap als HashMap
+ */
 public class FilterMap extends HashMap<String,Filter>{
 
         private PlayerFassade playerFassade;
