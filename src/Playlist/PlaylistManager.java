@@ -43,6 +43,7 @@ public class PlaylistManager {
                     mp3 = new Mp3File(f);
             } catch (Exception e) {
                 System.err.println("Song nicht Gefunden! : "+f);
+                continue;
             }
             if(mp3!=null){
                 if(mp3.hasId3v2Tag()){
