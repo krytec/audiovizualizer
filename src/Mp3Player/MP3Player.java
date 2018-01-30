@@ -1,4 +1,5 @@
 package Mp3Player;
+import Expections.NoSongException;
 import Playlist.Track;
 import Playlist.Playlist;
 import ddf.minim.AudioPlayer;
@@ -52,19 +53,22 @@ public class MP3Player{
      * Am Ende der Play methode wird updateLabel() aufgerufen, damit die Szene aktualisiert wird
      * @param filename
      */
-    public void play(String filename){
-        actTrackp.set(actPlaylist.getTrack(filename));
-        track= actPlaylist.getTrackNo(filename);
-        System.out.println(actTrack.getLength());
-        playing=true;
-        audioplayer = minim.loadFile(filename);
-        audioplayer.setGain(-12);
-        timer = new Timer();
-        length.set(0);
-        TrackTask task = new TrackTask();
-        timer.schedule(task,10,10);
-        audioplayer.play();
-
+    public void play(String filename) throws NoSongException {
+        try {
+            actTrackp.set(actPlaylist.getTrack(filename));
+            track = actPlaylist.getTrackNo(filename);
+            System.out.println(actTrack.getLength());
+            playing = true;
+            audioplayer = minim.loadFile(filename);
+            audioplayer.setGain(-12);
+            timer = new Timer();
+            length.set(0);
+            TrackTask task = new TrackTask();
+            timer.schedule(task, 10, 10);
+            audioplayer.play();
+        }catch(Exception e){
+            throw new NoSongException("Fehler! : Kein Song vorhanden!");
+        }
 
     }
 
@@ -72,37 +76,49 @@ public class MP3Player{
      * Spielt eine Playlist ab
      * @param playlist
      */
-    public void play(Playlist playlist){
-        length.set(0);
-        playing=true;
-        actPlaylist = playlist;
-        actTrack = actPlaylist.getTrack(track);
-        play(actTrack.getFile());
+    public void play(Playlist playlist) throws NoSongException {
+        try {
+            length.set(0);
+            playing = true;
+            actPlaylist = playlist;
+            actTrack = actPlaylist.getTrack(track);
+            play(actTrack.getFile());
+        }catch(Exception e){
+            throw new NoSongException("Fehler! : Kein Song vorhanden!");
+        }
 
     }
 
     /**
      * Wenn der Player spielt, wird er pausiert. Der Timer hält an.
      */
-    public void pause(){
+    public void pause() throws NoSongException {
+
         if(playing) {
+            try {
             timer.cancel();
             playing = false;
             audioplayer.pause();
-
+            }catch (Exception e){
+                throw new NoSongException("Fehler : Kein Song vorhanden!");
+            }
         }
     }
 
     /**
      * Spielt den Track ab der grade geladen ist, unbenutzt für das Projekt
      */
-    public void play(){
+    public void play() throws NoSongException {
+        try{
         timer = new Timer();
         TrackTask task = new TrackTask();
         timer.schedule(task, 0, 100);
         playing=true;
         System.out.print(actTrack.getFile());
         audioplayer.play();
+        }catch(Exception e){
+            throw new NoSongException("Fehler! : Kein Song vorhanden!");
+        }
 
 
     }
@@ -119,9 +135,13 @@ public class MP3Player{
      * Setzt das Volume des Players
      * @param value float Variable die das Volume angibt
      */
-    public void volume(float value){
+    public void volume(float value) throws NoSongException {
         value = (float) ( 10* (Math.log10(value)));
-        audioplayer.setGain(value);
+        try{
+            audioplayer.setGain(value);
+        }catch(Exception e){
+            throw new NoSongException("Fehler! : Kein Song vorhanden!");
+        }
     }
 
     /**
@@ -137,7 +157,7 @@ public class MP3Player{
      * Skipped einen Song nach vorne, wenn es auf Shuffle ist wird ein beliebiger Song ausgewählt, bei repeat der selbe Song nochmal
      * Der Timer wird dabei immer wieder gecanceld und neu gesetzt in der Playmethode, damit man weiß das Lied ist vorbei
      */
-    public void skip(){
+    public void skip() throws NoSongException {
         if(audioplayer!=null) {
             if (repeat) {
                 minim.stop();
@@ -171,7 +191,7 @@ public class MP3Player{
     /**
      * Geht einen Song zurück, wenn auf Repeat wird der gleiche Song gespielt, ansonsten geht er einen Song zurück
      */
-    public void skipBack(){
+    public void skipBack() throws NoSongException {
         if(audioplayer!=null) {
             if (repeat) {
                 minim.stop();
@@ -273,7 +293,11 @@ public class MP3Player{
                         length.set(length.get()+1);
                     }
                     else{
-                        skip();
+                        try {
+                            skip();
+                        } catch (NoSongException e) {
+                            e.getMessage();
+                        }
                     }
 
 

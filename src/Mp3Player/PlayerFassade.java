@@ -1,6 +1,7 @@
 package Mp3Player;
 
 
+import Expections.NoSongException;
 import Mp3Player.MP3Player;
 import Playlist.PlaylistManager;
 import Playlist.Track;
@@ -45,9 +46,17 @@ public class PlayerFassade {
         playing.set(true);
         if(pause){
             pause=false;
-            player.play();
+            try {
+                player.play();
+            } catch (NoSongException e) {
+                e.getMessage();
+            }
         }else {
-            player.play(playlist);
+            try {
+                player.play(playlist);
+            } catch (NoSongException e) {
+                e.getMessage();
+            }
         }
     }
 
@@ -57,7 +66,11 @@ public class PlayerFassade {
      */
     public void play(String file){
         playing.set(true);
-        player.play(file);
+        try {
+            player.play(file);
+        } catch (NoSongException e) {
+            e.getMessage();
+        }
     }
 
     /**
@@ -67,7 +80,11 @@ public class PlayerFassade {
         if(pause) {
             playing.set(true);
         }
-        player.skip();
+        try {
+            player.skip();
+        }catch(NoSongException e){
+            e.getMessage();
+        }
     }
 
     /**
@@ -77,7 +94,11 @@ public class PlayerFassade {
         if(pause) {
             playing.set(true);
         }
-        player.skipBack();
+        try {
+            player.skipBack();
+        }catch (NoSongException e){
+            e.getMessage();
+        }
     }
 
     /**
@@ -104,7 +125,12 @@ public class PlayerFassade {
     public void pause(){
         playing.set(false);
         pause=true;
-        player.pause();
+        try {
+            player.pause();
+        }catch (NoSongException e){
+            e.getMessage();
+        }
+
     }
 
     /**
@@ -121,7 +147,11 @@ public class PlayerFassade {
      * @param value Volume, welches später in Dezibel umgewandelt wird
      */
     public void volume(float value){
-        player.volume(value);
+        try {
+            player.volume(value);
+        } catch (NoSongException e) {
+            e.getMessage();
+        }
     }
 
     /**

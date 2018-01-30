@@ -1,22 +1,18 @@
 package GUI;
 
-import Exceptions.SongNotFoundException;
+
 import Filter.FilterMap;
 import Mp3Player.MP3Player;
 import Mp3Player.PlayerFassade;
 import Playlist.Playlist;
 import Playlist.PlaylistManager;
-import com.sun.javafx.font.freetype.HBGlyphLayout;
 import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.*;
-import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -49,7 +45,7 @@ public class AudioVisualiser {
      * Initialisiert den Visualiser
      * @throws IOException
      */
-    public Scene init() throws IOException, SongNotFoundException {
+    public Scene init() throws IOException {
         HBox main = new HBox();
         VBox root = new VBox();
         player = new MP3Player();

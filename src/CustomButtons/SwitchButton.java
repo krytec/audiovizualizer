@@ -7,11 +7,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * @author Florian Ortmann , Lea Haugrund
+ * SwitchButton, ein Button der einen On/Off Schalter besitzt
+ */
 public class SwitchButton extends HBox {
     private Button onoff = new Button();
     private Label on = new Label();
     private SimpleBooleanProperty switched = new SimpleBooleanProperty(false);
 
+    /**
+     * Constructor für einen Switch Button
+     */
     public SwitchButton(){
         on.setText("off");
         this.getChildren().addAll(on,onoff);
@@ -42,6 +49,10 @@ public class SwitchButton extends HBox {
         });
     }
 
+    /**
+     * switchedProperty getter der eine SimpleBooleanProperty zurückgibt, welche den Status des Buttons ausgibt
+     * @return SimpleBooleanProperty true=on,false=off
+     */
     public SimpleBooleanProperty switchedProperty() {
         return switched;
     }
