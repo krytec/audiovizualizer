@@ -7,23 +7,35 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+/**
+ * @author Florian Ortmann , Lea Haugrund
+ * Visualisiert Musik mithilfe von Vierecken im Hintergrund
+ */
 public class BackgroundFilter extends Filter {
     private PlayerFassade playerFassade;
     private GraphicsContext gc;
     private FFT fft;
-    private BeatDetect beatDetect;
 
+    /**
+     * Constructor für einen BackgroundFilter
+     * @param name Name des Filters
+     * @param playerFassade Zur Ansteuerung des Mp3Players via Minim
+     * @param gc Graphiccontext des Canvas
+     */
     public BackgroundFilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
         this.playerFassade = playerFassade;
         this.gc=gc;
     }
 
+    /**
+     * Zeichnet den Filter
+     */
     @Override
     public void drawFilter() {
         fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
         fft.forward(playerFassade.getAudio().mix);
-        beatDetect = new BeatDetect();
+
 
         double midx = gc.getCanvas().getWidth()/2;
         double midy = gc.getCanvas().getHeight()/2;

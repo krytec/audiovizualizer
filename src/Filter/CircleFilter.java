@@ -5,6 +5,10 @@ import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Florian Ortmann , Lea Haugrund
+ * Visualisiert Musik in einem Kreis
+ */
 public class CircleFilter extends Filter{
 
     private PlayerFassade playerFassade;
@@ -13,13 +17,24 @@ public class CircleFilter extends Filter{
     private double oldx,oldy;
 
 
+    /**
+     * Constructor für einen CircleFilter
+     * @param name Name des Filters
+     * @param playerFassade Zur Ansteuerung des Mp3Players via Minim
+     * @param gc Graphiccontext des Canvas
+     */
     public CircleFilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
         this.gc = gc;
         this.playerFassade = playerFassade;
     }
 
-
+    /**
+     * Zeichnet einen Kreis um die Musik zu Visualisieren
+     * Nimmt die vorherigen X und Y Werte um den Kreis vollständig zu Zeichnen
+     * @param oldX alter X Wert
+     * @param oldY alter Y Wert
+     **/
     public void drawFilter(double[] oldX,double[] oldY){
         fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
         fft.window(FFT.LANCZOS);
@@ -27,7 +42,9 @@ public class CircleFilter extends Filter{
         double r;
         double points = (fft.specSize()/2);
         double slice = 2 * Math.PI / points;
-
+        /*
+            Umrechnung der FFT Werte
+         */
         float[] band = new float[fft.specSize()];
         for(int i = 0;i< fft.specSize();i++){
 
@@ -84,15 +101,15 @@ public class CircleFilter extends Filter{
             newBand[i]=value;
         }
 
-        /** Kreis!
-         *
-         */
+
         for (int i = 0; i < points; i++) {
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;
 
 
-
+            /*
+                Radius des Kreises dynamisch Berechnet
+             */
             r = map(newBand[i],
                     0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 2);
 
@@ -106,6 +123,9 @@ public class CircleFilter extends Filter{
                     x2=oldx;
                     y2=oldy;
                 }
+                /*
+                    Zeichnet Linien vom alten X-Wert zum neuen
+                 */
                 gc.strokeLine(oldX[0], oldY[0], x2, y2);
                 oldX[0] = x2;
                 oldY[0] = y2;
@@ -120,14 +140,26 @@ public class CircleFilter extends Filter{
     }
 
 
+    /**
+     * Wird in diesem Filter nicht benutzt, da wir ja eine drawFilter Methode mit den alten X und Y Werten benutzen
+     */
     @Override
     public void drawFilter() {
 
     }
 
+    /**
+     * getter für OldX
+     * @return oldx
+     */
     public double getOldx(){
         return oldx;
     }
+
+    /**
+     * getter für OldY
+     * @return oldy
+     */
     public double getOldy(){
         return oldy;
     }

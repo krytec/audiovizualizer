@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.DrawFilter;
 import Filter.Filter;
 import javafx.scene.canvas.GraphicsContext;
 

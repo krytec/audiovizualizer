@@ -1,5 +1,6 @@
 package Playlist;
 
+import Exceptions.SongNotFoundException;
 import com.mpatric.mp3agic.Mp3File;
 
 import java.io.BufferedReader;
@@ -31,9 +32,9 @@ public class PlaylistManager {
      * @return Die fertige Playlist mit allen Tracks die sich im User Verzeichnis befinden.
      * @throws IOException
      */
-    public Playlist createTrack(Playlist playlist)throws IOException{
+    public Playlist createTrack(Playlist playlist)throws SongNotFoundException,IOException{
         BufferedReader br = new BufferedReader(new FileReader("playlist.M3U"));
-        String f,titel,album,intepret,genre;
+        String f,titel,album,intepret;
         byte[] b;
         int length;
 
@@ -42,8 +43,7 @@ public class PlaylistManager {
             try {
                     mp3 = new Mp3File(f);
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.print(f);
+                throw new SongNotFoundException("Song nicht Gefunden");
             }
             if(mp3!=null){
                 if(mp3.hasId3v2Tag()){
@@ -71,7 +71,6 @@ public class PlaylistManager {
                     titel = f.split(Pattern.quote("\\"))[f.split(Pattern.quote("\\")).length-1];
                     intepret= " ";
                     album = " ";
-                    genre=" ";
                 }
                 length = (int) mp3.getLengthInMilliseconds();
                 Track t = new Track(f,titel,album,intepret,b,length);

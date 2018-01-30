@@ -12,8 +12,14 @@ import java.util.HashMap;
  */
 public class FilterMap extends HashMap<String,Filter>{
 
-        private PlayerFassade playerFassade;
-        private GraphicsContext gc;
+    private PlayerFassade playerFassade;
+    private GraphicsContext gc;
+
+    /**
+     * Constructor für eine FilterMap, welche die verschiedenen Filter enthält
+     * @param playerFassade Zur Ansteuerung des Mp3Players via Minim
+     * @param gc Graphiccontentext des Canvas
+     */
     public FilterMap(PlayerFassade playerFassade, GraphicsContext gc){
         super();
         this.gc=gc;
@@ -24,6 +30,9 @@ public class FilterMap extends HashMap<String,Filter>{
 
     }
 
+    /**
+     * Initialisiert eine FilterMap mit gegebenen Filtern
+     */
     public void init(){
         CircleFilter circleFilter = new CircleFilter("Circle", playerFassade,gc);
         LineFilter lineFilter = new LineFilter("Line", playerFassade,gc);

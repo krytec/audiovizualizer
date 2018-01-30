@@ -3,17 +3,31 @@ package Filter;
 import Mp3Player.PlayerFassade;
 import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
+/**
+ * @author Florian Ortmann ,Lea Haugrund
+ * Visualisiert Musik mit einer Spirale
+ */
 public class SpiralFilter extends Filter {
     private PlayerFassade playerFassade;
     private GraphicsContext gc;
     private FFT fft;
+
+    /**
+     * Constructor für einen SpiralFilter
+     * @param name Name des Filters
+     * @param playerFassade Zur Ansteuerung des Mp3Players via Minim
+     * @param gc Graphiccontext des Canvas
+     */
     public SpiralFilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
         this.playerFassade = playerFassade;
         this.gc=gc;
     }
+
+    /**
+     * Zeichnet den Filter auf den Canvas
+     */
     @Override
     public void drawFilter() {
 
@@ -23,15 +37,14 @@ public class SpiralFilter extends Filter {
         double points = (fft.specSize()/2)-1;
         double slice = 2 * Math.PI / points;
 
-        float spread = map(450, 0, (float) points, 1, 21.5f);
-        
-
+        /*
+            Umrechnung der FFT-Werte, berechnet den durchschnitt von 3 Punkten nebeneinander
+         */
         float[] band = new float[fft.specSize()];
         for(int i = 0;i< fft.specSize();i++){
             band[i]=fft.getBand(i);
 
         }
-
         for(int i = 0;i<fft.specSize();i++){
             float value = 0;
             if(i==0){
@@ -83,6 +96,9 @@ public class SpiralFilter extends Filter {
         int j=0;
         int k=0;
 
+        /*
+            Zeichnet die Werte
+         */
         for(int i=0;i<points*2;i++){
             double midx =  gc.getCanvas().getWidth()/2;
             double midy =  gc.getCanvas().getHeight()/2;

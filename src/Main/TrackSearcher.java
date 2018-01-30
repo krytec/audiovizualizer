@@ -34,7 +34,6 @@ public class TrackSearcher {
      */
     public static void walk(String path) throws IOException {
         File playlist = new File("playlist.M3U");
-       // bw = new BufferedWriter(new FileWriter(playlist, playlist.exists()));
         File root = new File(path);
         File[] list = root.listFiles();
         if(list != null) {

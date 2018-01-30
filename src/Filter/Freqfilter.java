@@ -5,6 +5,10 @@ import ddf.minim.analysis.FFT;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Florian Ortmann , Lea Haugrund
+ * Visualisiert die Musik anhand ihrer Frequenz mit Quadraten
+ */
 public class Freqfilter extends Filter {
 
     private PlayerFassade playerFassade;
@@ -12,12 +16,22 @@ public class Freqfilter extends Filter {
     private GraphicsContext gc;
     private double r;
 
+    /**
+     * Constructor für den FrequenzFilter
+     * @param name Name des Filters
+     * @param playerFassade Zur Ansteuerung des Mp3Players via Minim
+     * @param gc Graphiccontext des Canvas
+     */
     public Freqfilter(String name, PlayerFassade playerFassade, GraphicsContext gc){
         super(name);
         this.playerFassade = playerFassade;
         this.gc=gc;
     }
 
+
+    /**
+     * drawFilter Methode zum Zeichnen des Filters
+     */
     @Override
     public void drawFilter() {
         fft = new FFT(playerFassade.getAudio().bufferSize(), playerFassade.getAudio().sampleRate());
@@ -25,10 +39,13 @@ public class Freqfilter extends Filter {
         double points = fft.specSize();
 
         double slice = 2*Math.PI/points;
+
+        //Spreaded die Quadrate
         float spread = map(450, 0, (float) points, 1, 21.5f);
 
         for (int i = 0; i < points; i += spread) {
 
+            //Radius wird dynamisch berechnet, skaliert von 0-1 in Range der Höhe des Fensters/4
             r = map(fft.getFreq(i), 0, 1, (float) gc.getCanvas().getHeight()/4, (float) gc.getCanvas().getHeight()/4 + 5);
 
             double angle = slice * i;
