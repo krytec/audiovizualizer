@@ -299,7 +299,10 @@ public class MP3Player{
     }
 
 
-
+    /**
+     * Getter für den AudioPlayer
+     * @return AudioPlayer
+     */
     public AudioPlayer getAudioplayer() {
         return audioplayer;
     }

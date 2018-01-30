@@ -188,5 +188,9 @@ public class PlayerFassade {
         return shuffle;
     }
 
+    /**
+     * Getter für den AudioPlayer
+     * @return AudioPlayer
+     */
     public AudioPlayer getAudio() { return player.getAudioplayer();}
 }
