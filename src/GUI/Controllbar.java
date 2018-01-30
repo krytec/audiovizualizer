@@ -165,6 +165,11 @@ public class Controllbar extends VBox{
 
     }
 
+    /**
+     *
+     * @return
+     */
+
     public Button getOptions(){
         return options;
     }

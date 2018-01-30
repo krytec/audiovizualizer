@@ -10,15 +10,27 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+/**
+ * @author Florian Ortmann, Lea Haugrund
+ * Objekt auf dem die Songinformationen angezeigt werden
+ */
 public class Songinformation extends VBox{
     private PlayerFassade playerFassade;
     private Label titel, album, interpret, laenge;
     private VBox info;
+
+    /**
+     * Standard constructor für die Songinformationen
+     * @param playerFassade
+     */
     public Songinformation(PlayerFassade playerFassade){
         this.playerFassade = playerFassade;
         init();
     }
 
+    /**
+     * initalisiert die Songinformationen
+     */
     public void init(){
 
         setStyle("-fx-background-color:#808080;");

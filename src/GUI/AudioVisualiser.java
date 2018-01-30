@@ -1,5 +1,6 @@
 package GUI;
 
+import Exceptions.SongNotFoundException;
 import Filter.FilterMap;
 import Mp3Player.MP3Player;
 import Mp3Player.PlayerFassade;
@@ -20,6 +21,11 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+
+/**
+ * @author Florian Ortmann, Lea Haugrund
+ * Oberfläche auf der alles angezeigt wird
+ */
 public class AudioVisualiser {
     private PlayerFassade playerFassade;
     private Filtercontroller filtercontroller;
@@ -32,11 +38,18 @@ public class AudioVisualiser {
     private Controllbar controllbar;
     private SimpleBooleanProperty showoption = new SimpleBooleanProperty(false);
 
+    /**
+     * Standard constructor für den Visualiser
+     */
     public AudioVisualiser(){
 
     }
 
-    public Scene init() throws IOException {
+    /**
+     * Initialisiert den Visualiser
+     * @throws IOException
+     */
+    public Scene init() throws IOException, SongNotFoundException {
         HBox main = new HBox();
         VBox root = new VBox();
         player = new MP3Player();

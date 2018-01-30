@@ -3,6 +3,10 @@ package GUI;
 import Filter.Filter;
 import javafx.scene.canvas.GraphicsContext;
 
+/**
+ * @author Florian Ortmann, Lea Haugrund
+ * handhabt den drawFilter
+ */
 public class Filtercontroller {
     DrawFilter drawFilter;
 

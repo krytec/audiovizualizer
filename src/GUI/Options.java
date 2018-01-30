@@ -15,11 +15,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
-
+/**
+ * @author Florian Ortmann, Lea Haugrund
+ * Objekt auf dem die Filteroptionen angezeigt werden
+ */
 public class Options extends ListView<Filter>{
 
     private FilterMap filterMap;
     private Filtercontroller filtercontroller;
+
+    /**
+     * Standard constructor für die Obtionen
+     * @param filterMap
+     * @param filtercontroller
+     */
     public Options(FilterMap filterMap,Filtercontroller filtercontroller){
        this.filterMap=filterMap;
        this.filtercontroller=filtercontroller;
@@ -37,8 +46,9 @@ public class Options extends ListView<Filter>{
     }
 
 
-
-
+    /**
+     * erstellt die Zellen der Filteroptionen
+     */
     private class FilterCell extends ListCell<Filter> {
         private SwitchButton filterbtn;
         private Label filtername;

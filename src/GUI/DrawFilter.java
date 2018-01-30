@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Florian Ortmann, Lea Haugrund
+ * erzeugt Objekt auf dem die Filter dargestellt werden
+ */
 public class DrawFilter extends Group{
 
     private PlayerFassade playerFassade;
@@ -37,6 +41,10 @@ public class DrawFilter extends Group{
     private Color background;
     private Color notbackground;
 
+    /**
+     * Standard constructor für das Objekt
+     * @param playerFassade
+     */
     public DrawFilter(PlayerFassade playerFassade){
         this.playerFassade = playerFassade;
         try {
@@ -46,6 +54,10 @@ public class DrawFilter extends Group{
         }
     }
 
+    /**
+     * Initialisiert das Objekt
+     * @throws IOException
+     */
     public void init()throws IOException{
 
 
@@ -196,26 +208,50 @@ public class DrawFilter extends Group{
 
     }
 
+    /**
+     * fügt einen Filter der Filterliste hinzu
+     * @param filter
+     */
     public void setFilter(Filter filter){
         filterlist.add(filter);
     }
 
+    /**
+     * löscht einen Filter aus der Liste
+     * @param filter
+     */
     public void removeFilter(Filter filter){
         filterlist.remove(filter);
     }
 
+    /**
+     * gibt den Grafikkontext zurück
+     * @return
+     */
     public GraphicsContext getGC(){
         return gc;
     }
 
+    /**
+     * setzt die Breite des Objektes auf dem die Filter abgebildet werden
+     * @param width
+     */
     public void setWidth(double width){
         canvas.setWidth(width);
     }
 
+    /**
+     * setzt die Höhe des Objektes auf dem die Filter abgebildet werden
+     * @param height
+     */
     public void setHeight(double height){
         canvas.setHeight(height);
     }
 
+    /**
+     * gibt die Durchschnittsfarbe eines Bildes zurück
+     * @param img
+     */
     private Color averageBackGroundColor(BufferedImage img){
         int x = img.getWidth();
         int y = img.getHeight();
@@ -236,6 +272,11 @@ public class DrawFilter extends Group{
 
 
     }
+
+    /**
+     * gibt den Gegensatz der Durchschnittsfarbe zurück
+     * @param img
+     */
     private Color complementaryColor(BufferedImage img){
         int x = img.getWidth();
         int y = img.getHeight();

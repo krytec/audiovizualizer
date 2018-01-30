@@ -132,30 +132,58 @@ public class PlayerFassade {
         return manager.getPlaylists();
     }
 
+    /**
+     *
+     * @return die Trackproperty
+     */
     public SimpleObjectProperty<Track> trackProperty(){
         return player.trackProperty();
     }
 
+    /**
+     *
+     * @return die Lengthproperty
+     */
     public SimpleIntegerProperty integerProperty(){
         return player.lengthProperty();
     }
 
+    /**
+     *
+     * @return eine SimpleProperty ob gespielt wird
+     */
     public SimpleBooleanProperty isPlaying() {
         return playing;
     }
 
+    /**
+     * Getter ob gerade pausiert wird
+     * @return true/false ob gerade pausiert wird
+     */
     public boolean isPause() {
         return pause;
     }
 
+    /**
+     * Getter für die aktuell gespielte Playlist
+     * @return eine Playlist
+     */
     public Playlist getactPlaylist(){
         return manager.getPlaylist(0);
     }
 
+    /**
+     * Getter ob gerade wiederholt werden soll
+     * @return true/false
+     */
     public boolean isRepeat() {
         return repeat;
     }
 
+    /**
+     * Getter ob gerade geshuffled werden soll
+     * @return true/false
+     */
     public boolean isShuffle() {
         return shuffle;
     }
