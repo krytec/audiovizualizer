@@ -20,9 +20,10 @@ import java.io.IOException;
 
 /**
  * @author Florian Ortmann, Lea Haugrund
- * Oberfläche auf der alles angezeigt wird
+ * Audiovisualiser der eine Scene erstellt und zurück gibt
  */
-public class AudioVisualiser {
+public class AudioVisualiser{
+    
     private PlayerFassade playerFassade;
     private Filtercontroller filtercontroller;
     private PlaylistManager manager;
@@ -33,18 +34,23 @@ public class AudioVisualiser {
     private FilterMap filterMap;
     private Controllbar controllbar;
     private SimpleBooleanProperty showoption = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty showcontrollbar = new SimpleBooleanProperty(false);
+
 
     /**
      * Standard constructor für den Visualiser
      */
-    public AudioVisualiser(){
+    public AudioVisualiser() throws IOException {
+
 
     }
 
     /**
-     * Initialisiert den Visualiser
-     * @throws IOException
-     */
+     * Initialisiert den Visualiser, returnt eine Scene
+     * @throws IOException wenn Song nicht gefunden wurde
+     *
+     **/
+
     public Scene init() throws IOException {
         HBox main = new HBox();
         VBox root = new VBox();
@@ -61,11 +67,25 @@ public class AudioVisualiser {
         main.getChildren().addAll(draw);
 
         root.getChildren().addAll(main,controllbar);
+        root.setOnMouseMoved(e-> {
+            if(root.getHeight()-e.getSceneY()>150){
+                showcontrollbar.set(false);
+                root.getChildren().remove(controllbar);
+            }else{
+                    showcontrollbar.set(true);
+                if(!root.getChildren().contains(controllbar)) {
 
+                    root.getChildren().add(controllbar);
+                }
+
+
+            }
+        });
 
 
         root.setPrefSize(800,600);
         root.setMinWidth(100);
+
         root.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -84,7 +104,12 @@ public class AudioVisualiser {
         root.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                filtercontroller.setHeight(newValue.doubleValue()-150);
+                if(showcontrollbar.getValue()){
+                    filtercontroller.setHeight(newValue.doubleValue()-150);
+                }else{
+                    filtercontroller.setHeight(newValue.doubleValue());
+                }
+
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1),draw);
                 fadeTransition.setFromValue(0.5);
                 fadeTransition.setToValue(1.0);
@@ -130,7 +155,19 @@ public class AudioVisualiser {
                 fadeTransition.play();
             }
         });
+
+        showcontrollbar.addListener((a,b,c)-> {
+            if(c){
+
+                filtercontroller.setHeight(root.getHeight()-150);
+            }else{
+
+                filtercontroller.setHeight(root.getHeight());
+            }
+        });
+
        return scene;
 
     }
+
 }

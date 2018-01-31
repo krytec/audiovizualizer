@@ -21,7 +21,9 @@ public class Main extends Application {
         File playlist = new File("playlist.m3u");
         if(!playlist.exists()){
             TrackSearcher trackSearcher = new TrackSearcher();
+            System.out.println("Keine Playlist gefunden starte Song suche...");
             trackSearcher.walk("C:\\users\\");
+            System.out.println("... Fertig : playlist.m3u im Ordner "+playlist.getAbsolutePath()+" erstellt!");
         }
         AudioVisualiser audioVisualiser = new AudioVisualiser();
         Scene scene = audioVisualiser.init();
@@ -31,7 +33,7 @@ public class Main extends Application {
     }
 
     /**
-     * verarbeitet args
+     * Main methode
      * @param args
      */
     public static void main(String[] args) {

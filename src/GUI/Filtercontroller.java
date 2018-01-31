@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * @author Florian Ortmann, Lea Haugrund
- * handhabt den drawFilter
+ * Controller für DrawFilter zum ansteuern des Canvas
  */
 public class Filtercontroller {
     DrawFilter drawFilter;
